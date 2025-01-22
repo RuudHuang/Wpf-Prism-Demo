@@ -1,0 +1,62 @@
+﻿<Window x:Class="WpfPracticeDemo.Views.UcBootAdvancedActionView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:helpers="clr-namespace:WpfPracticeDemo.Helpers"
+        xmlns:local="clr-namespace:WpfPracticeDemo.Views"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:models="clr-namespace:WpfPracticeDemo.Models"
+        Title="UcBootAdvancedActionView"
+        Width="400"
+        Height="180"
+        ResizeMode="NoResize"
+        WindowStartupLocation="CenterScreen"
+        WindowStyle="None"
+        mc:Ignorable="d">
+    <WindowChrome.WindowChrome>
+        <WindowChrome CaptionHeight="0"
+                      CornerRadius="20"
+                      GlassFrameThickness="0" />
+    </WindowChrome.WindowChrome>
+    <helpers:EventToCommandHelpercs.EventTrigger>
+        <models:DemoEventTrigger EventName="Loaded"
+                                 TargetCommand="{Binding ExcuteStartActionsCommand}" />
+    </helpers:EventToCommandHelpercs.EventTrigger>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition Height="10" />
+                <RowDefinition />
+                <RowDefinition Height="10" />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="10" />
+                <ColumnDefinition />
+                <ColumnDefinition Width="10" />
+            </Grid.ColumnDefinitions>
+
+            <TextBlock Grid.Row="2"
+                       Grid.Column="1"
+                       HorizontalAlignment="Left"
+                       Text="{Binding ExcutingActionName}" />
+
+            <ProgressBar Grid.Row="4"
+                         Grid.Column="1"
+                         Height="10"
+                         Maximum="100"
+                         Minimum="0"
+                         Value="{Binding ProgressValue}" />
+
+        </Grid>
+
+    </Grid>
+</Window>
