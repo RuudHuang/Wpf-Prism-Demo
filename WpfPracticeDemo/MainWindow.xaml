@@ -16,7 +16,7 @@
         mc:Ignorable="d">
     <helpers:EventToCommandHelpercs.EventTrigger>
         <models:DemoEventTrigger EventName="Loaded"
-                                 TargetCommand="{Binding NavigateToDefaultViewCommand}" />
+                                 TargetCommand="{Binding LoadedCommand}" />
     </helpers:EventToCommandHelpercs.EventTrigger>
         <Grid>
             <Grid.RowDefinitions>

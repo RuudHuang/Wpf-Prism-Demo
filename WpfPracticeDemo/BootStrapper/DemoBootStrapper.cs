@@ -39,6 +39,7 @@ namespace WpfPracticeDemo.BootStrapper
             containerRegistry.RegisterForNavigation<UcContentView, ContentViewModel>();
             containerRegistry.RegisterSingleton<IDemoRegionNavigateService, DemoRegionNavigateService>();              
             containerRegistry.RegisterSingleton<IStartActionService, StartActionService>();
+            containerRegistry.RegisterSingleton<IGeometryService, GeometryService>();
         }
 
         private void InitializeStartActions()

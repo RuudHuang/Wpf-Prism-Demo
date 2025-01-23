@@ -11,9 +11,16 @@ namespace WpfPracticeDemo.Commands
     {
         Action _commandExcuteAction;
 
+        Action<object> _commandExcutedActionWithParameter;
+
         public DemoCommand(Action commandExcuteAction)
         {
             _commandExcuteAction = commandExcuteAction;
+        }
+
+        public DemoCommand(Action<object> commandExcutedActionWithParameter)
+        {
+            _commandExcutedActionWithParameter = commandExcutedActionWithParameter;
         }
 
         public event EventHandler CanExecuteChanged;
@@ -27,8 +34,15 @@ namespace WpfPracticeDemo.Commands
         {
             if (CanExecute(null))
             {
-                _commandExcuteAction?.Invoke();
-            }            
+                if (parameter == null)
+                {
+                    _commandExcuteAction?.Invoke();
+                }
+                else
+                {
+                    _commandExcutedActionWithParameter?.Invoke(parameter);
+                }
+            }                        
         }
     }
 }

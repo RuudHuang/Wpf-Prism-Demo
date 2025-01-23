@@ -48,7 +48,7 @@ namespace WpfPracticeDemo.Helpers
             var targetCommand= eventTriggerInfo.TargetCommand;
             if (targetCommand != null)
             {
-                targetCommand.Execute(null);
+                targetCommand.Execute(sender);
             }
         }
 

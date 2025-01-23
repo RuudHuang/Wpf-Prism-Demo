@@ -1,19 +1,21 @@
-﻿using Prism.Mvvm;
+﻿using Prism.Events;
+using Prism.Mvvm;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using WpfPracticeDemo.Events;
 using WpfPracticeDemo.Models;
 using WpfPracticeDemo.Shapes;
 
 namespace WpfPracticeDemo.ViewModels
 {
-    internal class OperationViewModel:BindableBase
+    internal class OperationViewModel: DemoVmBase
     {
 
-        private const string NormalShapeName = "NormalShape";
+        private const string NormalShapeName = "NormalShape";        
 
         private ShapeBase _selectedShape;
 
@@ -30,18 +32,20 @@ namespace WpfPracticeDemo.ViewModels
 
             set
             {
-                SetProperty(ref _selectedShape, value);
+                if (SetProperty(ref _selectedShape, value))
+                {
+                    var args = new SelectedShapeChangedEventArgs()
+                    {
+                        SelectedShape = value
+                    };
+                    _eventAggregator.GetEvent<SelectedShapeChangedEvent>().Publish(args);
+                }
             }
         }
 
-
-        public OperationViewModel()
+        public OperationViewModel(IEventAggregator eventAggregator):base(eventAggregator)
         { 
-           _shapeMenus = new ObservableCollection<OperationShapeMenu>();
-
-            InitializeOperationMenus();
-            InitializeSelectedShape();
-            ManageSubscribeForOperationShapeMenu(true);
+           _shapeMenus = new ObservableCollection<OperationShapeMenu>();                        
         }
 
         private void InitializeOperationMenus()
@@ -71,18 +75,12 @@ namespace WpfPracticeDemo.ViewModels
             };
             
             _shapeMenus.Add(shapeMenu2);
-
         }
 
         private void InitializeSelectedShape()
         { 
             SelectedShape=ShapeMenus.FirstOrDefault(x=>x.ShapeMenuName.Equals(NormalShapeName))?.Shapes[0];
-        }
-
-        private void ManageSubscribe(bool subscribe)
-        {
-            ManageSubscribeForOperationShapeMenu(subscribe);
-        }
+        }        
 
         private void ManageSubscribeForOperationShapeMenu(bool subscribe)
         {
@@ -119,6 +117,21 @@ namespace WpfPracticeDemo.ViewModels
             }
         }
 
-        
+        private void InitializeData()
+        {
+            InitializeSelectedShape();
+        }
+
+        protected override void OnLoaded(object parameter)
+        {
+            InitializeOperationMenus();
+            InitializeData();
+            ManageSubscribe(true);            
+        }
+
+        private void ManageSubscribe(bool subscribe)
+        {            
+            ManageSubscribeForOperationShapeMenu(true);
+        }
     }
 }

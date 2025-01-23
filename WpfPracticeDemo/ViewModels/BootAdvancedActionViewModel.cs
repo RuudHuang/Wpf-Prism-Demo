@@ -84,7 +84,7 @@ namespace WpfPracticeDemo.ViewModels
             });
         }
 
-        private async void ExcuteStartActions()
+        private async void ExcuteStartActions(object parameter)
         {
             var startActionResult=await _startActionService.ExcuteStartActions();
 

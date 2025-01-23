@@ -4,9 +4,15 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:WpfPracticeDemo.Views"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:helpers="clr-namespace:WpfPracticeDemo.Helpers"
+             xmlns:models="clr-namespace:WpfPracticeDemo.Models"
              d:DesignHeight="450"
              d:DesignWidth="800"
-             Background="Yellow"
              mc:Ignorable="d">
-    <TextBlock Text="ContentRegion" />
+    <helpers:EventToCommandHelpercs.EventTrigger>
+        <models:DemoEventTrigger EventName="Loaded"
+                                 TargetCommand="{Binding LoadedCommand}" />
+    </helpers:EventToCommandHelpercs.EventTrigger>
+    <Canvas Name="Canvas"
+            Background="Red"/>
 </UserControl>
