@@ -84,12 +84,13 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Adorners\BusyAdorner.cs" />
+    <Compile Include="Adorners\LoadingAdorner.cs" />
     <Compile Include="BootStrapper\DemoBootStrapper.cs" />
     <Compile Include="Commands\DemoCommand.cs" />
-    <Compile Include="Constants\DemoConstants.cs" />
+    <Compile Include="Constants\DemoRegionConstants.cs" />
     <Compile Include="Enums\StartActionResult.cs" />
     <Compile Include="Events\StartActionProgressChangedEvent.cs" />
+    <Compile Include="Helpers\AdornerHelper.cs" />
     <Compile Include="Helpers\EventToCommandHelpercs.cs" />
     <Compile Include="Helpers\ThreadHelper.cs" />
     <Compile Include="Interfaces\IDemoRegionNavigateService.cs" />
@@ -97,9 +98,14 @@
     <Compile Include="Interfaces\IStartActionService.cs" />
     <Compile Include="MainWindowViewModel.cs" />
     <Compile Include="Models\DemoEventTrigger.cs" />
+    <Compile Include="Models\OperationShapeMenu.cs" />
+    <Compile Include="Models\ShapeBase.cs" />
     <Compile Include="Models\StartActionProgressChangedEventArgs.cs" />
     <Compile Include="Services\DemoRegionNavigateService.cs" />
     <Compile Include="Services\StartActionService.cs" />
+    <Compile Include="Shapes\CircleShape.cs" />
+    <Compile Include="Shapes\LineShape.cs" />
+    <Compile Include="Shapes\RectangleShape.cs" />
     <Compile Include="StartActions\StartActionInitializeData.cs" />
     <Compile Include="ViewModels\BootAdvancedActionViewModel.cs" />
     <Compile Include="ViewModels\ContentViewModel.cs" />

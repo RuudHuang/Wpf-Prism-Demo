@@ -24,7 +24,7 @@ namespace WpfPracticeDemo.ViewModels
 
         private void Navigate()
         {
-            _regionManager.RequestNavigate(Constants.DemoConstants.ContentRegionName, nameof(UcOperationView));
+            _regionManager.RequestNavigate(Constants.DemoRegionConstants.ContentRegionName, nameof(UcOperationView));
         }
     }
 }
