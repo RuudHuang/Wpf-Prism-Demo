@@ -21,20 +21,23 @@ namespace WpfPracticeDemo.Shapes
 
         public override ShapeType Type => ShapeType.Line;
 
-        public override Geometry UpdateGeometry(Geometry orignalGeometry, ShapeBase shape, GeometryType geometryType, Point leftButtonDownPoint, Point leftButtonUpPoint)
+        public override Geometry GetRelativeGeometry(Geometry orignalGeometry, ShapeBase shape, GeometryType geometryType, Point leftButtonDownPoint, Point leftButtonUpPoint)
         {
             var deltaPoint = GetDeltaPoint(leftButtonDownPoint, leftButtonUpPoint);
-            var geometry = orignalGeometry as LineGeometry;
-            geometry.StartPoint =new Point(geometry.StartPoint.X+deltaPoint.X,geometry.StartPoint.Y+deltaPoint.Y);
-            geometry.EndPoint = new Point(geometry.EndPoint.X + deltaPoint.X, geometry.EndPoint.Y + deltaPoint.Y);
+            var baseGeometry = orignalGeometry as LineGeometry;
+            var baseGeometryStatPoint = baseGeometry.StartPoint;
+            var baseGeometryEndPoint = baseGeometry.EndPoint;
 
-            return geometry;
+            LineGeometry lineGeometry = new LineGeometry()
+            {
+                StartPoint = new Point(baseGeometryStatPoint.X + deltaPoint.X, baseGeometryStatPoint.Y + deltaPoint.Y),
+                EndPoint = new Point(baseGeometryEndPoint.X + deltaPoint.X, baseGeometryEndPoint.Y + deltaPoint.Y)
+            };
+
+
+            return lineGeometry;
         }
 
-        private Point GetDeltaPoint(Point leftButtonDownPoint, Point leftButtonUpPoint)
-        {
-            return new Point(leftButtonUpPoint.X - leftButtonDownPoint.X, leftButtonUpPoint.Y - leftButtonDownPoint.Y);            
-        }
 
         protected override Geometry CreateMouseOverGeometry(Point leftButtonDownPoint, Point leftButtonUpPoint)
         {
@@ -55,6 +58,31 @@ namespace WpfPracticeDemo.Shapes
         protected override Geometry CreateShapeSelectedGeometry(Point leftButtonDownPoint, Point leftButtonUpPoint)
         {
             throw new NotImplementedException();
+        }
+
+        public override bool IsGeometryValidation(Geometry shapeGeometry, Rect canvasRect)
+        {
+            var lineGeometry = shapeGeometry as LineGeometry;
+
+            if (lineGeometry.StartPoint.X < canvasRect.Location.X
+                || lineGeometry.StartPoint.X > canvasRect.Location.X + canvasRect.Width
+                || lineGeometry.StartPoint.Y < canvasRect.Location.Y
+                || lineGeometry.StartPoint.Y > canvasRect.Location.Y + canvasRect.Height
+                || lineGeometry.EndPoint.X < canvasRect.Location.X
+                || lineGeometry.EndPoint.X > canvasRect.Location.X + canvasRect.Width
+                || lineGeometry.EndPoint.Y < canvasRect.Location.Y
+                || lineGeometry.EndPoint.Y > canvasRect.Location.Y + canvasRect.Height)
+            {
+                return false;
+            }
+
+            return base.IsGeometryValidation(shapeGeometry, canvasRect);
+        }
+
+        public override bool IsGeometryPointInSelectedRect(Geometry shapeGeometry, Rect selectedRect)
+        {
+            return false;
+
         }
     }
 }

@@ -15,6 +15,7 @@ namespace WpfPracticeDemo.Adorners
         private Geometry _shapeAdorner;
 
         private Color _adornerColor;
+        
 
         public ShapeDrawingAdorner(UIElement adornedElement,
                                    Geometry shapeAdorner,

@@ -38,12 +38,18 @@ namespace WpfPracticeDemo.Models
         protected abstract Geometry CreateMouseOverGeometry(Point leftButtonDownPoint, Point leftButtonUpPoint);
         protected abstract Geometry CreateShapeSelectedGeometry(Point leftButtonDownPoint, Point leftButtonUpPoint);
 
-        public abstract Geometry UpdateGeometry(Geometry orignalGeometry, ShapeBase shape, GeometryType geometryType, Point leftButtonDownPoint, Point leftButtonUpPoint);
+        public abstract Geometry GetRelativeGeometry(Geometry orignalGeometry, ShapeBase shape, GeometryType geometryType, Point leftButtonDownPoint, Point leftButtonUpPoint);
 
+        public abstract bool IsGeometryPointInSelectedRect(Geometry shapeGeometry, Rect selectedRect);
 
-        public virtual bool IsGeometryValidation(Rect canvasRect)
+        public virtual bool IsGeometryValidation(Geometry shapeGeometry,Rect canvasRect)
         {
             return true;
+        }
+
+        protected Point GetDeltaPoint(Point leftButtonDownPoint, Point leftButtonUpPoint)
+        {
+            return new Point(leftButtonUpPoint.X - leftButtonDownPoint.X, leftButtonUpPoint.Y - leftButtonDownPoint.Y);
         }
     }
 }

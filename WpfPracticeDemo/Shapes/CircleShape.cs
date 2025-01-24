@@ -17,13 +17,13 @@ namespace WpfPracticeDemo.Shapes
 
         public override ShapeType Type => ShapeType.Circle;
 
-        public override Geometry CurrentShapeGeometry => _currentShapeGeometry;        
+        public override Geometry CurrentShapeGeometry => _currentShapeGeometry;
 
         protected override Geometry CreateShapeGeometry(Point leftButtonDownPoint, Point leftButtonUpPoint)
         {
             var circleRadius = GetRadius(leftButtonDownPoint, leftButtonUpPoint);
 
-            _currentShapeGeometry= new EllipseGeometry()
+            _currentShapeGeometry = new EllipseGeometry()
             {
                 Center = leftButtonDownPoint,
                 RadiusX = circleRadius,
@@ -38,13 +38,14 @@ namespace WpfPracticeDemo.Shapes
             return Math.Sqrt(Math.Pow(leftButtonDownPoint.X - leftButtonUpPoint.X, 2) + Math.Pow(leftButtonDownPoint.Y - leftButtonUpPoint.Y, 2));
         }
 
-        public override bool IsGeometryValidation(Rect canvasRect)
+        public override bool IsGeometryValidation(Geometry shapeGeometry, Rect canvasRect)
         {
-            var circleRadius = _currentShapeGeometry.RadiusX;
-            var pointLeft = _currentShapeGeometry.Center.X - circleRadius;
-            var pointTop = _currentShapeGeometry.Center.Y - circleRadius;
-            var pointRight = _currentShapeGeometry.Center.X + circleRadius;
-            var pointBottom = _currentShapeGeometry.Center.Y + circleRadius;
+            var circleShapeGeometry = shapeGeometry as EllipseGeometry;
+            var circleRadius = circleShapeGeometry.RadiusX;
+            var pointLeft = circleShapeGeometry.Center.X - circleRadius;
+            var pointTop = circleShapeGeometry.Center.Y - circleRadius;
+            var pointRight = circleShapeGeometry.Center.X + circleRadius;
+            var pointBottom = circleShapeGeometry.Center.Y + circleRadius;
 
             if (pointLeft < canvasRect.X
                 || pointTop < canvasRect.Y
@@ -54,7 +55,7 @@ namespace WpfPracticeDemo.Shapes
                 return false;
             }
 
-            return base.IsGeometryValidation(canvasRect);
+            return base.IsGeometryValidation(shapeGeometry, canvasRect);
         }
 
         protected override Geometry CreateMouseOverGeometry(Point leftButtonDownPoint, Point leftButtonUpPoint)
@@ -67,9 +68,25 @@ namespace WpfPracticeDemo.Shapes
             throw new NotImplementedException();
         }
 
-        public override Geometry UpdateGeometry(Geometry orignalGeometry, ShapeBase shape, GeometryType geometryType, Point leftButtonDownPoint, Point leftButtonUpPoint)
+        public override Geometry GetRelativeGeometry(Geometry orignalGeometry, ShapeBase shape, GeometryType geometryType, Point leftButtonDownPoint, Point leftButtonUpPoint)
         {
-            throw new NotImplementedException();
+            var deltaPoint = GetDeltaPoint(leftButtonDownPoint, leftButtonUpPoint);
+            var orignalGeometryCenterPoint = (orignalGeometry as EllipseGeometry).Center;
+            var circleRadius = (orignalGeometry as EllipseGeometry).RadiusX;
+
+            EllipseGeometry ellipseGeometry = new EllipseGeometry()
+            {
+                Center = new Point(orignalGeometryCenterPoint.X + deltaPoint.X, orignalGeometryCenterPoint.Y + deltaPoint.Y),
+                RadiusX = circleRadius,
+                RadiusY = circleRadius
+            };
+
+            return ellipseGeometry;
+        }
+
+        public override bool IsGeometryPointInSelectedRect(Geometry shapeGeometry, Rect selectedRect)
+        {
+            return false;
         }
     }
 }

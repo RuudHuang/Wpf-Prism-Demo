@@ -19,14 +19,19 @@ namespace WpfPracticeDemo.Services
             return shape.CreateGeometry(geometryType, leftButtonDownPoint, leftButtonUpPoint);
         }
 
-        public bool IsGeometryValidation(ShapeBase shape, Rect canvasRect)
+        public bool IsGeometryValidation(ShapeBase shape,Geometry shapeGeometry, Rect canvasRect)
         {
-            return shape.IsGeometryValidation(canvasRect);
+            return shape.IsGeometryValidation(shapeGeometry,canvasRect);
         }
 
-        public Geometry UpdateGeometry(Geometry orignalGeometry, ShapeBase shape, GeometryType geometryType, Point leftButtonDownPoint, Point leftButtonUpPoint)
+        public Geometry GetRelativeGeometry(Geometry orignalGeometry, ShapeBase shape, GeometryType geometryType, Point leftButtonDownPoint, Point leftButtonUpPoint)
         {
-            return shape.UpdateGeometry(orignalGeometry, shape, geometryType, leftButtonDownPoint, leftButtonUpPoint);
+            return shape.GetRelativeGeometry(orignalGeometry, shape, geometryType, leftButtonDownPoint, leftButtonUpPoint);
+        }
+
+        public bool IsGeometryPointInSelectedRect(ShapeBase shape, Geometry shapeGeometry, Rect selectedRect)
+        {
+            return shape.IsGeometryPointInSelectedRect(shapeGeometry, selectedRect);
         }
     }
 }

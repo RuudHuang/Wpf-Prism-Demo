@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media;
+using System.Windows.Shapes;
 using WpfPracticeDemo.Enums;
 using WpfPracticeDemo.Models;
 
@@ -21,9 +22,22 @@ namespace WpfPracticeDemo.Shapes
 
         public override Geometry CurrentShapeGeometry => _currentShapeGeometry;
 
-        public override Geometry UpdateGeometry(Geometry orignalGeometry, ShapeBase shape, GeometryType geometryType, Point leftButtonDownPoint, Point leftButtonUpPoint)
+        public override Geometry GetRelativeGeometry(Geometry orignalGeometry, ShapeBase shape, GeometryType geometryType, Point leftButtonDownPoint, Point leftButtonUpPoint)
         {
-            throw new NotImplementedException();
+            var deltaPoint = GetDeltaPoint(leftButtonDownPoint, leftButtonUpPoint);
+            var orignalGeometryRect = (orignalGeometry as RectangleGeometry).Rect;
+
+            RectangleGeometry rectangleGeometry = new RectangleGeometry()
+            {
+                Rect = new Rect()
+                {
+                    Location = new Point(orignalGeometryRect.X + deltaPoint.X, orignalGeometryRect.Y + deltaPoint.Y),
+                    Height = orignalGeometryRect.Height,
+                    Width = orignalGeometryRect.Width,
+                }
+            };
+
+            return rectangleGeometry;
         }
 
         protected override Geometry CreateMouseOverGeometry(Point leftButtonDownPoint, Point leftButtonUpPoint)
@@ -87,6 +101,26 @@ namespace WpfPracticeDemo.Shapes
             };
 
             return rectangleSize;
+        }
+
+        public override bool IsGeometryValidation(Geometry shapeGeometry, Rect canvasRect)
+        {
+            var rectangleGeometryRect = (shapeGeometry as RectangleGeometry).Rect;
+
+            if (rectangleGeometryRect.Location.X < canvasRect.Location.X
+                || rectangleGeometryRect.Location.Y < canvasRect.Y
+                || rectangleGeometryRect.Location.X + rectangleGeometryRect.Width > canvasRect.Location.X + canvasRect.Width
+                || rectangleGeometryRect.Location.Y + rectangleGeometryRect.Height > canvasRect.Location.Y + canvasRect.Height)
+            {
+                return false;
+            }
+
+            return base.IsGeometryValidation(shapeGeometry, canvasRect);
+        }
+
+        public override bool IsGeometryPointInSelectedRect(Geometry shapeGeometry, Rect selectedRect)
+        {
+            return true;
         }
     }
 }
