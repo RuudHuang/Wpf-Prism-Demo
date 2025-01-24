@@ -10,7 +10,7 @@ namespace WpfPracticeDemo.Constants
     {
         public const string MenuRegionName = "MenuRegion";
 
-        public const string OperationRegionName = "OperationRegion";
+        public const string ShapeOptionRegionName = "ShapeOptionRegion";
 
         public const string ContentRegionName = "ContentRegion";
     }

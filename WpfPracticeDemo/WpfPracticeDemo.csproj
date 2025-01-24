@@ -84,13 +84,18 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Adorners\LoadingAdorner.cs" />
+    <Compile Include="Adorners\ShapeDrawingAdorner.cs" />
+    <Compile Include="Adorners\ShapeMouseEnterAdorner.cs" />
+    <Compile Include="Adorners\ShapeSelectedAdorner.cs" />
     <Compile Include="BootStrapper\DemoBootStrapper.cs" />
     <Compile Include="Commands\DemoCommand.cs" />
     <Compile Include="Constants\DemoRegionConstants.cs" />
+    <Compile Include="Enums\GeometryType.cs" />
+    <Compile Include="Enums\OperationType.cs" />
     <Compile Include="Enums\ShapeType.cs" />
     <Compile Include="Enums\StartActionResult.cs" />
     <Compile Include="Events\NotifyInitializeDataAfterWindowLoadedEvent.cs" />
+    <Compile Include="Events\OperationTypeChangedEvent.cs" />
     <Compile Include="Events\SelectedShapeChangedEvent.cs" />
     <Compile Include="Events\StartActionProgressChangedEvent.cs" />
     <Compile Include="Helpers\AdornerHelper.cs" />
@@ -102,6 +107,7 @@
     <Compile Include="Interfaces\IStartActionService.cs" />
     <Compile Include="MainWindowViewModel.cs" />
     <Compile Include="Models\DemoEventTrigger.cs" />
+    <Compile Include="Models\DemoGraphicInfomation.cs" />
     <Compile Include="Models\OperationShapeMenu.cs" />
     <Compile Include="Models\SelectedShapeChangedEventArgs.cs" />
     <Compile Include="Models\ShapeBase.cs" />
@@ -127,8 +133,8 @@
     <Compile Include="Views\UcMenuView.xaml.cs">
       <DependentUpon>UcMenuView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\UcOperationView.xaml.cs">
-      <DependentUpon>UcOperationView.xaml</DependentUpon>
+    <Compile Include="Views\UcShapeOptionView.xaml.cs">
+      <DependentUpon>UcShapeOptionView.xaml</DependentUpon>
     </Compile>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -158,7 +164,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\UcOperationView.xaml">
+    <Page Include="Views\UcShapeOptionView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

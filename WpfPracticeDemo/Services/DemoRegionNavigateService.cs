@@ -21,7 +21,7 @@ namespace WpfPracticeDemo.Services
         public void NavigateAllRegionToDefaultView()
         {
             _regionManager.RequestNavigate(Constants.DemoRegionConstants.MenuRegionName, nameof(UcMenuView));
-            _regionManager.RequestNavigate(Constants.DemoRegionConstants.OperationRegionName, nameof(UcOperationView));
+            _regionManager.RequestNavigate(Constants.DemoRegionConstants.ShapeOptionRegionName, nameof(UcShapeOptionView));
             _regionManager.RequestNavigate(Constants.DemoRegionConstants.ContentRegionName, nameof(UcContentView));
         }
 

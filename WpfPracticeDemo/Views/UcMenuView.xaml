@@ -9,15 +9,13 @@
              xmlns:models="clr-namespace:WpfPracticeDemo.Models"
              d:DesignHeight="450"
              d:DesignWidth="800"
-             Background="Red"
              mc:Ignorable="d">
     <helpers:EventToCommandHelpercs.EventTrigger>
         <models:DemoEventTrigger EventName="Loaded"
                                  TargetCommand="{Binding LoadedCommand}" />
     </helpers:EventToCommandHelpercs.EventTrigger>
     <StackPanel>
-        <TextBlock Text="MenuRegion" />
-
-        <TextBox helpers:AdornerHelper.HasloadingAdnorner="True" />
+        <ComboBox ItemsSource="{Binding OperationTypes}"
+                  SelectedItem="{Binding SelectedOperationType}" />
     </StackPanel>
 </UserControl>

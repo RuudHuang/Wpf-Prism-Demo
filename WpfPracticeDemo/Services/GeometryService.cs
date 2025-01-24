@@ -12,40 +12,21 @@ using WpfPracticeDemo.Models;
 
 namespace WpfPracticeDemo.Services
 {
-    internal class GeometryService: IGeometryService
+    internal class GeometryService : IGeometryService
     {
-        private Point _leftButtonDownPoint;
-
-        private Point _leftButtonUpPoint;
-
-        private ShapeBase _selectedShape;
-
-        public Point LeftButtonDownPoint 
+        public Geometry GetGeometry(ShapeBase shape, GeometryType geometryType, Point leftButtonDownPoint, Point leftButtonUpPoint)
         {
-            set { _leftButtonDownPoint = value; } 
-        }
-        public Point LeftButtonUpPoint
-        {
-            set
-            {
-                _leftButtonUpPoint = value;
-            } 
-        }       
-
-        public ShapeBase SelectedShape
-        {
-            set
-            { 
-               _selectedShape = value;
-            }
+            return shape.CreateGeometry(geometryType, leftButtonDownPoint, leftButtonUpPoint);
         }
 
-        public Geometry GetGeometry()
+        public bool IsGeometryValidation(ShapeBase shape, Rect canvasRect)
         {
-           return _selectedShape.GetGeometry(_leftButtonDownPoint, _leftButtonUpPoint);
+            return shape.IsGeometryValidation(canvasRect);
         }
-        
 
-        
+        public Geometry UpdateGeometry(Geometry orignalGeometry, ShapeBase shape, GeometryType geometryType, Point leftButtonDownPoint, Point leftButtonUpPoint)
+        {
+            return shape.UpdateGeometry(orignalGeometry, shape, geometryType, leftButtonDownPoint, leftButtonUpPoint);
+        }
     }
 }

@@ -12,41 +12,64 @@ namespace WpfPracticeDemo.Shapes
 {
     internal class RectangleShape : ShapeBase
     {
+
+        private RectangleGeometry _currentShapeGeometry;
+
         public override string Name => "Rectangle";
 
         public override ShapeType Type => ShapeType.Rectangle;
 
-        public override Geometry GetGeometry(Point leftButtonDownButton, Point leftButtonUpPoint)
+        public override Geometry CurrentShapeGeometry => _currentShapeGeometry;
+
+        public override Geometry UpdateGeometry(Geometry orignalGeometry, ShapeBase shape, GeometryType geometryType, Point leftButtonDownPoint, Point leftButtonUpPoint)
         {
-            return new RectangleGeometry()
+            throw new NotImplementedException();
+        }
+
+        protected override Geometry CreateMouseOverGeometry(Point leftButtonDownPoint, Point leftButtonUpPoint)
+        {
+            throw new NotImplementedException();
+        }
+
+        protected override Geometry CreateShapeGeometry(Point leftButtonDownPoint, Point leftButtonUpPoint)
+        {
+            _currentShapeGeometry = new RectangleGeometry()
             {
                 Rect = new Rect()
                 {
-                    Location = GetRectangleLocation(leftButtonDownButton,leftButtonUpPoint),
-                    Size = GetRectangleSize(leftButtonDownButton,leftButtonUpPoint)
+                    Location = GetRectangleLocation(leftButtonDownPoint, leftButtonUpPoint),
+                    Size = GetRectangleSize(leftButtonDownPoint, leftButtonUpPoint)
                 }
             };
+
+
+            return _currentShapeGeometry;
         }
 
-        private Point GetRectangleLocation(Point leftButtonDownButton, Point leftButtonUpPoint)
+        protected override Geometry CreateShapeSelectedGeometry(Point leftButtonDownPoint, Point leftButtonUpPoint)
+        {
+            throw new NotImplementedException();
+        }
+
+        private Point GetRectangleLocation(Point leftButtonDownPoint, Point leftButtonUpPoint)
         {
 
-            if (leftButtonUpPoint.X > leftButtonDownButton.X)
+            if (leftButtonUpPoint.X > leftButtonDownPoint.X)
             {
-                if (leftButtonUpPoint.Y > leftButtonDownButton.Y)
+                if (leftButtonUpPoint.Y > leftButtonDownPoint.Y)
                 {
-                    return leftButtonDownButton;
+                    return leftButtonDownPoint;
                 }
                 else
                 {
-                    return new Point(leftButtonDownButton.X, leftButtonUpPoint.Y);
+                    return new Point(leftButtonDownPoint.X, leftButtonUpPoint.Y);
                 }
             }
             else
             {
-                if (leftButtonUpPoint.Y > leftButtonDownButton.Y)
+                if (leftButtonUpPoint.Y > leftButtonDownPoint.Y)
                 {
-                    return new Point(leftButtonUpPoint.X, leftButtonDownButton.Y);
+                    return new Point(leftButtonUpPoint.X, leftButtonDownPoint.Y);
                 }
                 else
                 {
@@ -55,12 +78,12 @@ namespace WpfPracticeDemo.Shapes
             }
         }
 
-        private Size GetRectangleSize(Point leftButtonDownButton, Point leftButtonUpPoint)
+        private Size GetRectangleSize(Point leftButtonDownButtonPoint, Point leftButtonUpPoint)
         {
             Size rectangleSize = new Size()
             {
-                Height = Math.Abs(leftButtonDownButton.Y - leftButtonUpPoint.Y),
-                Width = Math.Abs(leftButtonDownButton.X - leftButtonUpPoint.X)
+                Height = Math.Abs(leftButtonDownButtonPoint.Y - leftButtonUpPoint.Y),
+                Width = Math.Abs(leftButtonDownButtonPoint.X - leftButtonUpPoint.X)
             };
 
             return rectangleSize;

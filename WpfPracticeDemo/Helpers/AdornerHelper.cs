@@ -34,7 +34,7 @@ namespace WpfPracticeDemo.Helpers
                 var adornerLayer = AdornerLayer.GetAdornerLayer(d as UIElement);
                 if (adornerLayer != null)
                 {
-                    adornerLayer.Add(new LoadingAdorner(d as UIElement));
+                    //adornerLayer.Add(new LoadingAdorner(d as UIElement));
                 }
                 
             }

@@ -18,25 +18,25 @@
         <models:DemoEventTrigger EventName="Loaded"
                                  TargetCommand="{Binding LoadedCommand}" />
     </helpers:EventToCommandHelpercs.EventTrigger>
-        <Grid>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="auto" />
-                <RowDefinition Height="*" />
-            </Grid.RowDefinitions>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
 
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="200" />
-                <ColumnDefinition Width="*" />
-            </Grid.ColumnDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="200" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
 
-            <ContentControl Grid.ColumnSpan="2"
-                            prism:RegionManager.RegionName="{x:Static constants:DemoRegionConstants.MenuRegionName}" />
+        <ContentControl Grid.ColumnSpan="2"
+                        prism:RegionManager.RegionName="{x:Static constants:DemoRegionConstants.MenuRegionName}" />
 
-            <ContentControl Grid.Row="1"
-                            prism:RegionManager.RegionName="{x:Static constants:DemoRegionConstants.OperationRegionName}" />
+        <ContentControl Grid.Row="1"
+                        prism:RegionManager.RegionName="{x:Static constants:DemoRegionConstants.ShapeOptionRegionName}" />
 
-            <ContentControl Grid.Row="1"
-                            Grid.Column="1"
-                            prism:RegionManager.RegionName="{x:Static constants:DemoRegionConstants.ContentRegionName}" />
-        </Grid>
+        <ContentControl Grid.Row="1"
+                        Grid.Column="1"
+                        prism:RegionManager.RegionName="{x:Static constants:DemoRegionConstants.ContentRegionName}" />
+    </Grid>
 </Window>

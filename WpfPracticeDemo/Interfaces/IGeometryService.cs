@@ -12,12 +12,11 @@ namespace WpfPracticeDemo.Interfaces
 {
     public interface IGeometryService
     {
-        Point LeftButtonDownPoint { set; }
 
-        Point LeftButtonUpPoint { set; }
+        Geometry GetGeometry(ShapeBase shape,GeometryType geometryType, Point leftButtonDownPoint, Point leftButtonUpPoint);
 
-        ShapeBase SelectedShape {set; }
+        Geometry UpdateGeometry(Geometry orignalGeometry,ShapeBase shape, GeometryType geometryType, Point leftButtonDownPoint, Point leftButtonUpPoint);
 
-        Geometry GetGeometry();
+        bool IsGeometryValidation(ShapeBase shape,Rect canvasRect);
     }
 }
