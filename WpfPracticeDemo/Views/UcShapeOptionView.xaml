@@ -25,13 +25,8 @@
                         <ControlTemplate TargetType="{x:Type ListBoxItem}">
                             <Expander Header="{Binding ShapeMenuName}"
                                       IsExpanded="{Binding IsExpanded}">
-                                <ListBox ItemsSource="{Binding Shapes}"
-                                         SelectedItem="{Binding ElementName=ShapeMenus, Path=DataContext.SelectedShape}">
-                                    <ListBox.ItemTemplate>
-                                        <DataTemplate DataType="{x:Type models:ShapeBase}">
-                                            <TextBlock Text="{Binding Name}" />
-                                        </DataTemplate>
-                                    </ListBox.ItemTemplate>
+                                <ListBox ItemsSource="{Binding ShapeTypes}"
+                                         SelectedItem="{Binding ElementName=ShapeMenus, Path=DataContext.SelectedShapeType}">
                                 </ListBox>
                             </Expander>
                         </ControlTemplate>

@@ -15,21 +15,28 @@ namespace WpfPracticeDemo.Adorners
         private Geometry _shapeAdorner;
 
         private Color _adornerColor;
+
+        private DashStyle _adornerDashStyle;
         
 
         public ShapeDrawingAdorner(UIElement adornedElement,
                                    Geometry shapeAdorner,
-                                   Color adornerColor) 
+                                   Color adornerColor,
+                                   DashStyle dashStyle) 
             : base(adornedElement)
         {
             _shapeAdorner = shapeAdorner;
             _adornerColor = adornerColor;
+            _adornerDashStyle = dashStyle;
         }
 
         protected override void OnRender(DrawingContext drawingContext)
         {
-            drawingContext.DrawGeometry(new SolidColorBrush(Colors.Transparent), new Pen(new SolidColorBrush(_adornerColor), 5), _shapeAdorner);           
+            var shapeBrush = new SolidColorBrush(Colors.Transparent);
+            var shapePen = new Pen(new SolidColorBrush(_adornerColor), 5);
+            shapePen.DashStyle = _adornerDashStyle;
 
+            drawingContext.DrawGeometry(shapeBrush, shapePen, _shapeAdorner);
             base.OnRender(drawingContext);
         }
 

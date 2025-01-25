@@ -12,13 +12,17 @@ namespace WpfPracticeDemo.Adorners
 {
     internal class ShapeSelectedAdorner : Adorner
     {
-        public ShapeSelectedAdorner(UIElement adornedElement) : base(adornedElement)
+        private Geometry _geometry;
+
+        public ShapeSelectedAdorner(UIElement adornedElement,
+            Geometry geometry) : base(adornedElement)
         {
+            _geometry = geometry;
         }
 
         protected override void OnRender(DrawingContext drawingContext)
         {
-            drawingContext.DrawGeometry(new SolidColorBrush(Colors.Transparent), new Pen(new SolidColorBrush(Colors.Blue), 10), (AdornedElement as Path).Data);
+            drawingContext.DrawGeometry(new SolidColorBrush(Colors.Transparent), new Pen(new SolidColorBrush(Colors.Gray), 2), _geometry);
 
             base.OnRender(drawingContext);
         }

@@ -11,17 +11,13 @@ using WpfPracticeDemo.Models;
 namespace WpfPracticeDemo.Shapes
 {
     internal class LineShape : ShapeBase
-    {
-
-        private LineGeometry _currentShapeGeometry;
+    {        
 
         public override string Name => "Line";
 
-        public override Geometry CurrentShapeGeometry => _currentShapeGeometry;
-
         public override ShapeType Type => ShapeType.Line;
 
-        public override Geometry GetRelativeGeometry(Geometry orignalGeometry, ShapeBase shape, GeometryType geometryType, Point leftButtonDownPoint, Point leftButtonUpPoint)
+        public override Geometry GetRelativeGeometry(Geometry orignalGeometry, ShapeBase shape, GeometryType geometryType, Point leftButtonDownPoint, Point leftButtonUpPoint, bool isUpdateGeometry)
         {
             var deltaPoint = GetDeltaPoint(leftButtonDownPoint, leftButtonUpPoint);
             var baseGeometry = orignalGeometry as LineGeometry;
@@ -34,6 +30,10 @@ namespace WpfPracticeDemo.Shapes
                 EndPoint = new Point(baseGeometryEndPoint.X + deltaPoint.X, baseGeometryEndPoint.Y + deltaPoint.Y)
             };
 
+            if (isUpdateGeometry)
+            { 
+               _currentShapeGeometry = lineGeometry;
+            }
 
             return lineGeometry;
         }
@@ -44,20 +44,46 @@ namespace WpfPracticeDemo.Shapes
             throw new NotImplementedException();
         }
 
-        protected override Geometry CreateShapeGeometry(Point leftButtonDownPoint, Point leftButtonUpPoint)
+        protected override Geometry CreateShapeGeometry(Point leftButtonDownPoint, Point leftButtonUpPoint, bool updateOrignalGeometry)
         {
-            _currentShapeGeometry = new LineGeometry()
+            LineGeometry lineGeometry = new LineGeometry()
             {
                 StartPoint = leftButtonDownPoint,
                 EndPoint = leftButtonUpPoint
             };
 
-            return _currentShapeGeometry;
+            if (updateOrignalGeometry)
+            { 
+               _currentShapeGeometry = lineGeometry;
+            }
+
+            return lineGeometry;
         }
 
         protected override Geometry CreateShapeSelectedGeometry(Point leftButtonDownPoint, Point leftButtonUpPoint)
         {
-            throw new NotImplementedException();
+            GeometryGroup geometryGroup = new GeometryGroup();
+            var orignalStartPoint = (_currentShapeGeometry as LineGeometry).StartPoint;
+            var orignalEndPoint = (_currentShapeGeometry as LineGeometry).EndPoint;
+
+            EllipseGeometry ellipseGeometryStartPoint = new EllipseGeometry()
+            {
+                Center = orignalStartPoint,
+                RadiusX = ShapeSelectedAdornerRadius,
+                RadiusY = ShapeSelectedAdornerRadius
+            };
+
+            geometryGroup.Children.Add(ellipseGeometryStartPoint);
+
+            EllipseGeometry ellipseGeometryEndPoint = new EllipseGeometry()
+            {
+                Center = orignalEndPoint,
+                RadiusX = ShapeSelectedAdornerRadius,
+                RadiusY = ShapeSelectedAdornerRadius
+            };
+            geometryGroup.Children.Add(ellipseGeometryEndPoint);           
+
+            return geometryGroup;
         }
 
         public override bool IsGeometryValidation(Geometry shapeGeometry, Rect canvasRect)
@@ -81,7 +107,21 @@ namespace WpfPracticeDemo.Shapes
 
         public override bool IsGeometryPointInSelectedRect(Geometry shapeGeometry, Rect selectedRect)
         {
-            return false;
+            var lineGeometry = _currentShapeGeometry as LineGeometry;
+            
+            var lineStartPoint= lineGeometry.StartPoint;
+            var lineEndPoint= lineGeometry.EndPoint;
+
+            if ((lineStartPoint.X < selectedRect.Location.X && lineEndPoint.X < selectedRect.Location.X)
+                || (lineStartPoint.X > selectedRect.Location.X + selectedRect.Width && lineEndPoint.X > selectedRect.Location.X + selectedRect.Width)
+                || (lineStartPoint.Y < selectedRect.Location.Y && lineEndPoint.Y < selectedRect.Location.Y)
+                || (lineStartPoint.Y > selectedRect.Location.Y + selectedRect.Height && lineEndPoint.Y > selectedRect.Location.Y + selectedRect.Height))
+            {
+                return false;
+            }
+
+
+            return true;
 
         }
     }

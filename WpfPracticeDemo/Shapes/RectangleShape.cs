@@ -12,17 +12,13 @@ using WpfPracticeDemo.Models;
 namespace WpfPracticeDemo.Shapes
 {
     internal class RectangleShape : ShapeBase
-    {
-
-        private RectangleGeometry _currentShapeGeometry;
+    {       
 
         public override string Name => "Rectangle";
 
         public override ShapeType Type => ShapeType.Rectangle;
 
-        public override Geometry CurrentShapeGeometry => _currentShapeGeometry;
-
-        public override Geometry GetRelativeGeometry(Geometry orignalGeometry, ShapeBase shape, GeometryType geometryType, Point leftButtonDownPoint, Point leftButtonUpPoint)
+        public override Geometry GetRelativeGeometry(Geometry orignalGeometry, ShapeBase shape, GeometryType geometryType, Point leftButtonDownPoint, Point leftButtonUpPoint, bool isUpdateGeometry)
         {
             var deltaPoint = GetDeltaPoint(leftButtonDownPoint, leftButtonUpPoint);
             var orignalGeometryRect = (orignalGeometry as RectangleGeometry).Rect;
@@ -37,6 +33,11 @@ namespace WpfPracticeDemo.Shapes
                 }
             };
 
+            if (isUpdateGeometry)
+            {
+                _currentShapeGeometry = rectangleGeometry;
+            }
+
             return rectangleGeometry;
         }
 
@@ -45,9 +46,9 @@ namespace WpfPracticeDemo.Shapes
             throw new NotImplementedException();
         }
 
-        protected override Geometry CreateShapeGeometry(Point leftButtonDownPoint, Point leftButtonUpPoint)
+        protected override Geometry CreateShapeGeometry(Point leftButtonDownPoint, Point leftButtonUpPoint, bool updateOrignalGeometry)
         {
-            _currentShapeGeometry = new RectangleGeometry()
+            RectangleGeometry rectangleGeometry = new RectangleGeometry()
             {
                 Rect = new Rect()
                 {
@@ -56,13 +57,54 @@ namespace WpfPracticeDemo.Shapes
                 }
             };
 
+            if (updateOrignalGeometry)
+            { 
+              _currentShapeGeometry = rectangleGeometry;
+            }
 
-            return _currentShapeGeometry;
+            return rectangleGeometry;
         }
 
         protected override Geometry CreateShapeSelectedGeometry(Point leftButtonDownPoint, Point leftButtonUpPoint)
         {
-            throw new NotImplementedException();
+            GeometryGroup geometryGroup = new GeometryGroup();
+            var orignalRect = (_currentShapeGeometry as RectangleGeometry).Rect;            
+
+            EllipseGeometry ellipseGeometryLeftTop = new EllipseGeometry()
+            {
+                Center = orignalRect.Location,
+                RadiusX = ShapeSelectedAdornerRadius,
+                RadiusY = ShapeSelectedAdornerRadius
+            };
+
+            geometryGroup.Children.Add(ellipseGeometryLeftTop);
+
+            EllipseGeometry ellipseGeometryLeftBottom = new EllipseGeometry()
+            {
+                Center =new Point(orignalRect.Location.X,orignalRect.Location.Y+orignalRect.Height),
+                RadiusX = ShapeSelectedAdornerRadius,
+                RadiusY = ShapeSelectedAdornerRadius
+            };
+            geometryGroup.Children.Add(ellipseGeometryLeftBottom);
+
+            EllipseGeometry ellipseGeometryRightTop = new EllipseGeometry()
+            {
+                Center = new Point(orignalRect.Location.X+orignalRect.Width, orignalRect.Location.Y),
+                RadiusX = ShapeSelectedAdornerRadius,
+                RadiusY = ShapeSelectedAdornerRadius
+            };
+            geometryGroup.Children.Add(ellipseGeometryRightTop);
+
+            EllipseGeometry ellipseGeometryRightBottom = new EllipseGeometry()
+            {
+                Center = new Point(orignalRect.Location.X + orignalRect.Width, orignalRect.Location.Y + orignalRect.Height),
+                RadiusX = ShapeSelectedAdornerRadius,
+                RadiusY = ShapeSelectedAdornerRadius
+            };
+            geometryGroup.Children.Add(ellipseGeometryRightBottom);
+
+            return geometryGroup;
+
         }
 
         private Point GetRectangleLocation(Point leftButtonDownPoint, Point leftButtonUpPoint)
@@ -120,7 +162,17 @@ namespace WpfPracticeDemo.Shapes
 
         public override bool IsGeometryPointInSelectedRect(Geometry shapeGeometry, Rect selectedRect)
         {
-            return true;
+
+            var shapeRect = (_currentShapeGeometry as RectangleGeometry).Rect;
+
+            if (shapeRect.IntersectsWith(selectedRect))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }            
         }
     }
 }

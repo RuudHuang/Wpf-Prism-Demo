@@ -6,46 +6,47 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using WpfPracticeDemo.Enums;
 using WpfPracticeDemo.Events;
 using WpfPracticeDemo.Models;
 using WpfPracticeDemo.Shapes;
 
 namespace WpfPracticeDemo.ViewModels
 {
-    internal class OperationViewModel: DemoVmBase
+    internal class OperationViewModel : DemoVmBase
     {
 
-        private const string NormalShapeName = "NormalShape";        
+        private const string NormalShapeName = "NormalShape";
 
-        private ShapeBase _selectedShape;
+        private string _selectedShapeType;
 
         private readonly ObservableCollection<OperationShapeMenu> _shapeMenus;
 
         public ObservableCollection<OperationShapeMenu> ShapeMenus
-        { 
+        {
             get { return _shapeMenus; }
         }
 
-        public ShapeBase SelectedShape
+        public string SelectedShapeType
         {
-            get { return _selectedShape; }
+            get { return _selectedShapeType; }
 
             set
             {
-                if (SetProperty(ref _selectedShape, value))
+                if (SetProperty(ref _selectedShapeType, value))
                 {
                     var args = new SelectedShapeChangedEventArgs()
                     {
-                        SelectedShape = value
+                        SelectedShapeType = GetShapeType(value)
                     };
                     _eventAggregator.GetEvent<SelectedShapeChangedEvent>().Publish(args);
                 }
             }
         }
 
-        public OperationViewModel(IEventAggregator eventAggregator):base(eventAggregator)
-        { 
-           _shapeMenus = new ObservableCollection<OperationShapeMenu>();                        
+        public OperationViewModel(IEventAggregator eventAggregator) : base(eventAggregator)
+        {
+            _shapeMenus = new ObservableCollection<OperationShapeMenu>();
         }
 
         private void InitializeOperationMenus()
@@ -54,18 +55,18 @@ namespace WpfPracticeDemo.ViewModels
             {
                 ShapeMenuName = NormalShapeName,
                 IsExpanded = true,
-            };            
+            };
 
-            shapeMenu.Shapes.Add(new LineShape());
-            shapeMenu.Shapes.Add(new RectangleShape());
-            shapeMenu.Shapes.Add(new CircleShape());
+            shapeMenu.ShapeTypes.Add(nameof(ShapeType.Line));
+            shapeMenu.ShapeTypes.Add(nameof(ShapeType.Rectangle));
+            shapeMenu.ShapeTypes.Add(nameof(ShapeType.Circle));            
 
             _shapeMenus.Add(shapeMenu);
 
             OperationShapeMenu shapeMenu1 = new OperationShapeMenu()
             {
                 ShapeMenuName = "Shape1"
-            };            
+            };
 
             _shapeMenus.Add(shapeMenu1);
 
@@ -73,14 +74,14 @@ namespace WpfPracticeDemo.ViewModels
             {
                 ShapeMenuName = "Shape2"
             };
-            
+
             _shapeMenus.Add(shapeMenu2);
         }
 
         private void InitializeSelectedShape()
-        { 
-            SelectedShape=ShapeMenus.FirstOrDefault(x=>x.ShapeMenuName.Equals(NormalShapeName))?.Shapes[0];
-        }        
+        {
+            SelectedShapeType =ShapeMenus.FirstOrDefault(x => x.ShapeMenuName.Equals(NormalShapeName)).ShapeTypes[0];
+        }
 
         private void ManageSubscribeForOperationShapeMenu(bool subscribe)
         {
@@ -126,12 +127,43 @@ namespace WpfPracticeDemo.ViewModels
         {
             InitializeOperationMenus();
             InitializeData();
-            ManageSubscribe(true);            
+            ManageSubscribe(true);
         }
 
         private void ManageSubscribe(bool subscribe)
-        {            
+        {
+            if (subscribe)
+            {
+                _eventAggregator.GetEvent<OperationTypeChangedEvent>().Subscribe(OperationTypeChangedHandler);
+            }
+            else
+            {
+                _eventAggregator.GetEvent<OperationTypeChangedEvent>().Unsubscribe(OperationTypeChangedHandler);
+            }
             ManageSubscribeForOperationShapeMenu(true);
+        }
+
+        private void OperationTypeChangedHandler(OperationType operationType)
+        {
+            if (operationType.Equals(OperationType.Select))
+            {
+                SelectedShapeType = ShapeMenus.FirstOrDefault(x => x.ShapeMenuName.Equals(NormalShapeName)).ShapeTypes.FirstOrDefault(x => x.Equals(ShapeType.Rectangle));
+            }
+        }
+
+        private ShapeType GetShapeType(string shapeTypeName)
+        {
+            switch (shapeTypeName)
+            {
+                case nameof(ShapeType.Line):
+                    return ShapeType.Line;
+                case nameof(ShapeType.Rectangle):
+                    return ShapeType.Rectangle;
+                case nameof(ShapeType.Circle):
+                    return ShapeType.Circle;
+                default:
+                    return ShapeType.Line;
+            }
         }
     }
 }

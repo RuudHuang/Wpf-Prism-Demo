@@ -14,9 +14,9 @@ namespace WpfPracticeDemo.Services
 {
     internal class GeometryService : IGeometryService
     {
-        public Geometry GetGeometry(ShapeBase shape, GeometryType geometryType, Point leftButtonDownPoint, Point leftButtonUpPoint)
+        public Geometry GetGeometry(ShapeBase shape, GeometryType geometryType, Point leftButtonDownPoint, Point leftButtonUpPoint,bool isUpdateGeometry)
         {
-            return shape.CreateGeometry(geometryType, leftButtonDownPoint, leftButtonUpPoint);
+            return shape.CreateGeometry(geometryType, leftButtonDownPoint, leftButtonUpPoint, isUpdateGeometry);
         }
 
         public bool IsGeometryValidation(ShapeBase shape,Geometry shapeGeometry, Rect canvasRect)
@@ -24,9 +24,9 @@ namespace WpfPracticeDemo.Services
             return shape.IsGeometryValidation(shapeGeometry,canvasRect);
         }
 
-        public Geometry GetRelativeGeometry(Geometry orignalGeometry, ShapeBase shape, GeometryType geometryType, Point leftButtonDownPoint, Point leftButtonUpPoint)
+        public Geometry GetRelativeGeometry(Geometry orignalGeometry, ShapeBase shape, GeometryType geometryType, Point leftButtonDownPoint, Point leftButtonUpPoint, bool isUpdateGeometry)
         {
-            return shape.GetRelativeGeometry(orignalGeometry, shape, geometryType, leftButtonDownPoint, leftButtonUpPoint);
+            return shape.GetRelativeGeometry(orignalGeometry, shape, geometryType, leftButtonDownPoint, leftButtonUpPoint,isUpdateGeometry);
         }
 
         public bool IsGeometryPointInSelectedRect(ShapeBase shape, Geometry shapeGeometry, Rect selectedRect)

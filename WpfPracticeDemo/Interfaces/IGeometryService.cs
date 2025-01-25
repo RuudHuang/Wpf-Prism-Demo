@@ -13,9 +13,9 @@ namespace WpfPracticeDemo.Interfaces
     public interface IGeometryService
     {
 
-        Geometry GetGeometry(ShapeBase shape,GeometryType geometryType, Point leftButtonDownPoint, Point leftButtonUpPoint);
+        Geometry GetGeometry(ShapeBase shape,GeometryType geometryType, Point leftButtonDownPoint, Point leftButtonUpPoint,bool isUpdateGeometry);      
 
-        Geometry GetRelativeGeometry(Geometry orignalGeometry,ShapeBase shape, GeometryType geometryType, Point leftButtonDownPoint, Point leftButtonUpPoint);
+        Geometry GetRelativeGeometry(Geometry orignalGeometry,ShapeBase shape, GeometryType geometryType, Point leftButtonDownPoint, Point leftButtonUpPoint,bool isUpdateGeometry);
 
         bool IsGeometryValidation(ShapeBase shape,Geometry shapeGeometry, Rect canvasRect);
 

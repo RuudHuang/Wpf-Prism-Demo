@@ -10,6 +10,10 @@ namespace WpfPracticeDemo.Enums
     {
         DrawGraphic,
 
-        Select
+        Select,
+
+        Move,
+
+        Delete
     }
 }

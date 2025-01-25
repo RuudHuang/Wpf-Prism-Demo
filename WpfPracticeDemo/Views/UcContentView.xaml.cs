@@ -21,6 +21,7 @@ using WpfPracticeDemo.Enums;
 using WpfPracticeDemo.Events;
 using WpfPracticeDemo.Interfaces;
 using WpfPracticeDemo.Models;
+using WpfPracticeDemo.Shapes;
 using Path = System.Windows.Shapes.Path;
 
 namespace WpfPracticeDemo.Views
@@ -45,13 +46,17 @@ namespace WpfPracticeDemo.Views
 
         private OperationType _operationType;
 
-        private ShapeBase _selectedShapeType;
+        private ShapeType _selectedShapeType;
 
         private readonly ObservableCollection<DemoGraphicInfomation> _selectedGraphics = new ObservableCollection<DemoGraphicInfomation>();
 
         private readonly ObservableCollection<DemoGraphicInfomation> _graphics = new ObservableCollection<DemoGraphicInfomation>();
 
         private readonly ObservableCollection<ShapeDrawingAdorner> _shapeDrawingAdorners = new ObservableCollection<ShapeDrawingAdorner>();
+
+        private readonly ObservableCollection<ShapeSelectedAdorner> _shapeSelectedAdorners = new ObservableCollection<ShapeSelectedAdorner>();
+
+        private readonly ObservableCollection<DemoGraphicInfomation> _tempSelectedGraphics = new ObservableCollection<DemoGraphicInfomation>();
 
         public UcContentView(IEventAggregator eventAggregator,
             IGeometryService geometryService)
@@ -135,91 +140,118 @@ namespace WpfPracticeDemo.Views
 
         private void Canvas_MouseMove(object sender, MouseEventArgs e)
         {
-
-            if (e.LeftButton.Equals(MouseButtonState.Pressed) && _operationType.Equals(OperationType.DrawGraphic))
+            if (e.LeftButton.Equals(MouseButtonState.Pressed))
             {
-                var currentPosition = e.GetPosition(this.Canvas);
-
-                Rect canvasRect = new Rect()
+                if (_operationType.Equals(OperationType.DrawGraphic))
                 {
-                    Location = new Point(0, 0),
-                    Size = new Size(Canvas.ActualWidth, Canvas.ActualHeight)
-                };
+                    var currentPosition = e.GetPosition(this.Canvas);
 
-                var graphic = _geometryService.GetGeometry(_selectedShapeType, GeometryType.Shape, _canvasLeftButtonDownPoint, currentPosition);
-
-                Color adornerColor = Colors.Green;
-
-                if (!_geometryService.IsGeometryValidation(_selectedShapeType, graphic, canvasRect))
-                {
-                    adornerColor = Colors.Red;
-                }
-                var adornerLayer = AdornerLayer.GetAdornerLayer(this.Canvas);
-                if (adornerLayer != null)
-                {
-                    ClearAdorners(this.Canvas);
-
-                    ShapeDrawingAdorner shapeDrawingAdorner = new ShapeDrawingAdorner(this.Canvas, graphic, adornerColor);
-
-                    adornerLayer.Add(shapeDrawingAdorner);
-                    _shapeDrawingAdorners.Add(shapeDrawingAdorner);
-                }
-            }
-
-            if (e.LeftButton.Equals(MouseButtonState.Pressed) && _operationType.Equals(OperationType.Select))
-            {
-                var currentPosition = e.GetPosition(this.Canvas);
-
-                if (_selectedGraphics.Any())
-                {
                     Rect canvasRect = new Rect()
                     {
                         Location = new Point(0, 0),
                         Size = new Size(Canvas.ActualWidth, Canvas.ActualHeight)
                     };
 
-                    ClearAdorners(this.Canvas);
-                    _shapeDrawingAdorners.Clear();
+                    var shape = CreateShape(_selectedShapeType);
+                    var graphic = _geometryService.GetGeometry(shape, GeometryType.Shape, _canvasLeftButtonDownPoint, currentPosition, false);
 
-                    Color adornerColor = Colors.Yellow;
+                    Color adornerColor = Colors.Green;
 
-                    ObservableCollection<Geometry> tempGeometryCollection = new ObservableCollection<Geometry>();
-
-                    foreach (var item in _selectedGraphics)
+                    if (!_geometryService.IsGeometryValidation(shape, graphic, canvasRect))
                     {
-                        var graphic = _geometryService.GetRelativeGeometry(item.GraphicPath.Data, item.Shape, GeometryType.Shape, _canvasLeftButtonDownPoint, currentPosition);
-
-                        if (!_geometryService.IsGeometryValidation(item.Shape, graphic, canvasRect))
-                        {
-                            adornerColor = Colors.Red;
-                        }
-
-                        tempGeometryCollection.Add(graphic);
+                        adornerColor = Colors.Red;
                     }
-
-                    foreach (var item in tempGeometryCollection)
+                    var adornerLayer = AdornerLayer.GetAdornerLayer(this.Canvas);
+                    if (adornerLayer != null)
                     {
-                        var adornerLayer = AdornerLayer.GetAdornerLayer(this.Canvas);
-                        if (adornerLayer != null)
-                        {
-                            ShapeDrawingAdorner shapeDrawingAdorner = new ShapeDrawingAdorner(this.Canvas, item, adornerColor);
+                        ClearDrawingAdorners(this.Canvas);
 
-                            _shapeDrawingAdorners.Add(shapeDrawingAdorner);
-                            adornerLayer.Add(shapeDrawingAdorner);
-                        }
+                        ShapeDrawingAdorner shapeDrawingAdorner = new ShapeDrawingAdorner(this.Canvas, graphic, adornerColor, DashStyles.Solid);
+
+                        adornerLayer.Add(shapeDrawingAdorner);
+                        _shapeDrawingAdorners.Add(shapeDrawingAdorner);
                     }
                 }
                 else
                 {
-                    Rect selectedRect = new Rect()
-                    {
-                        Location = GetRectangleLocation(_canvasLeftButtonDownPoint, currentPosition),
-                        Size = GetRectangleSize(_canvasLeftButtonDownPoint, currentPosition)
-                    };
+                    var currentPosition = e.GetPosition(this.Canvas);
 
-                    SelectGraphicInSelectedRect(selectedRect);
-                }                
+                    if (_selectedGraphics.Any())
+                    {
+                        _operationType = OperationType.Move;
+                        Rect canvasRect = new Rect()
+                        {
+                            Location = new Point(0, 0),
+                            Size = new Size(Canvas.ActualWidth, Canvas.ActualHeight)
+                        };
+
+                        ClearDrawingAdorners(this.Canvas);
+                        _shapeDrawingAdorners.Clear();
+
+                        Color adornerColor = Colors.Yellow;
+
+                        ObservableCollection<Geometry> tempGeometryCollection = new ObservableCollection<Geometry>();
+
+                        foreach (var item in _selectedGraphics)
+                        {
+                            var graphic = _geometryService.GetRelativeGeometry(item.GraphicPath.Data, item.Shape, GeometryType.Shape, _canvasLeftButtonDownPoint, currentPosition, false);
+
+                            if (!_geometryService.IsGeometryValidation(item.Shape, graphic, canvasRect))
+                            {
+                                adornerColor = Colors.Red;
+                            }
+
+                            tempGeometryCollection.Add(graphic);
+                        }
+
+                        foreach (var item in tempGeometryCollection)
+                        {
+                            var adornerLayer = AdornerLayer.GetAdornerLayer(this.Canvas);
+                            if (adornerLayer != null)
+                            {
+                                ShapeDrawingAdorner shapeDrawingAdorner = new ShapeDrawingAdorner(this.Canvas, item, adornerColor, DashStyles.Solid);
+
+                                _shapeDrawingAdorners.Add(shapeDrawingAdorner);
+                                adornerLayer.Add(shapeDrawingAdorner);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        _operationType = OperationType.Select;
+                        Rect selectedRect = new Rect()
+                        {
+                            Location = GetRectangleLocation(_canvasLeftButtonDownPoint, currentPosition),
+                            Size = GetRectangleSize(_canvasLeftButtonDownPoint, currentPosition)
+                        };
+
+                        SelectGraphicInSelectedRect(selectedRect);
+
+
+                        Rect canvasRect = new Rect()
+                        {
+                            Location = new Point(0, 0),
+                            Size = new Size(Canvas.ActualWidth, Canvas.ActualHeight)
+                        };
+
+                        var shape = CreateShape(_selectedShapeType);
+                        var graphic = _geometryService.GetGeometry(shape, GeometryType.Shape, _canvasLeftButtonDownPoint, currentPosition, false);
+
+                        Color adornerColor = Colors.Gray;
+                        var adornerLayer = AdornerLayer.GetAdornerLayer(this.Canvas);
+                        if (adornerLayer != null)
+                        {
+                            ClearDrawingAdorners(this.Canvas);
+
+                            ShapeDrawingAdorner shapeDrawingAdorner = new ShapeDrawingAdorner(this.Canvas, graphic, adornerColor, DashStyles.Dash);
+
+                            adornerLayer.Add(shapeDrawingAdorner);
+                            _shapeDrawingAdorners.Add(shapeDrawingAdorner);
+                        }
+                    }
+                }
             }
+           
         }
 
         private void ResetCanvasLeftButtonPoint()
@@ -232,9 +264,9 @@ namespace WpfPracticeDemo.Views
         {
             if (e.LeftButton.Equals(MouseButtonState.Pressed))
             {
-                ClearAdorners(this.Canvas);
+                ClearDrawingAdorners(this.Canvas);
             }
-            ResetCanvasLeftButtonPoint();
+            //ResetCanvasLeftButtonPoint();
         }
 
         private void SelectGraphicInSelectedRect(Rect selectedRect)
@@ -244,7 +276,20 @@ namespace WpfPracticeDemo.Views
                 var isGeometryPointInSelectedRect= _geometryService.IsGeometryPointInSelectedRect(item.Shape, item.GraphicPath.Data, selectedRect);
                 if (isGeometryPointInSelectedRect)
                 {
-                    _selectedGraphics.Add(item);
+                    if (_tempSelectedGraphics.Any(x => x.Equals(item)))
+                    {
+                        continue;
+                    }
+
+                    var shapeSelectedAdornerGeometry = _geometryService.GetGeometry(item.Shape, GeometryType.Selected, _canvasLeftButtonDownPoint, _canvasLeftButtonUpPoint, false);
+
+                    ShapeSelectedAdorner shapeSelectedAdorner = new ShapeSelectedAdorner(item.GraphicPath, shapeSelectedAdornerGeometry);
+
+                    AdornerLayer.GetAdornerLayer(this.Canvas)?.Add(shapeSelectedAdorner);
+
+                    _shapeSelectedAdorners.Add(shapeSelectedAdorner);
+
+                    _tempSelectedGraphics.Add(item);
                 }
             }
         }
@@ -290,14 +335,14 @@ namespace WpfPracticeDemo.Views
         private void Canvas_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
             _canvasLeftButtonUpPoint = e.GetPosition(this.Canvas);
-            ClearAdorners(this.Canvas);
+            ClearDrawingAdorners(this.Canvas);
 
             if (_operationType.Equals(OperationType.DrawGraphic))
             {
                 DrawingGeometryToCanvas();
             }
             else
-            {
+            {                
                 Rect canvasRect = new Rect()
                 {
                     Location = new Point(0, 0),
@@ -308,7 +353,7 @@ namespace WpfPracticeDemo.Views
 
                 foreach (var item in _selectedGraphics)
                 {
-                    var graphic = _geometryService.GetRelativeGeometry(item.GraphicPath.Data, item.Shape, GeometryType.Shape, _canvasLeftButtonDownPoint, _canvasLeftButtonUpPoint);
+                    var graphic = _geometryService.GetRelativeGeometry(item.GraphicPath.Data, item.Shape, GeometryType.Shape, _canvasLeftButtonDownPoint, _canvasLeftButtonUpPoint,true);
 
                     if (!_geometryService.IsGeometryValidation(item.Shape, graphic, canvasRect))
                     {
@@ -329,12 +374,33 @@ namespace WpfPracticeDemo.Views
                     }
                 }
 
+                if (_operationType.Equals(OperationType.Move))
+                {
+                    if (_selectedGraphics.Any())
+                    {
+                        _selectedGraphics.Clear();
+                        _tempSelectedGraphics.Clear();
+                        ClearSelectedAdorners(this.Canvas);
+                    }
+
+                    _operationType = OperationType.Select;
+                }
+
+                if (_operationType.Equals(OperationType.Select))
+                {
+                    _selectedGraphics.AddRange(_tempSelectedGraphics);
+
+                    _operationType = OperationType.Move;
+                }
+
+                
+
             }
 
             ResetCanvasLeftButtonPoint();
         }
 
-        private void ClearAdorners(UIElement uiElement)
+        private void ClearDrawingAdorners(UIElement uiElement)
         {
             var adornerLayer = AdornerLayer.GetAdornerLayer(uiElement);
             if (adornerLayer != null)
@@ -342,7 +408,28 @@ namespace WpfPracticeDemo.Views
                 foreach (var item in _shapeDrawingAdorners)
                 {
                     adornerLayer.Remove(item);
+                }               
+            }
+        }
+
+        private void ClearSelectedAdorners(UIElement uiElement)
+        {
+            var adornerLayer = AdornerLayer.GetAdornerLayer(uiElement);
+            if (adornerLayer != null)
+            {
+                foreach (var item in _shapeSelectedAdorners)
+                {
+                    adornerLayer.Remove(item);
                 }
+            }
+        }
+
+        private void AddAdorner(UIElement uiElement,Adorner adorner)
+        {
+            var adornerLayer = AdornerLayer.GetAdornerLayer(uiElement);
+            if (adornerLayer != null)
+            {
+                adornerLayer.Add(adorner);
             }
         }
 
@@ -353,7 +440,7 @@ namespace WpfPracticeDemo.Views
 
         private void SelectedShapeChangedHandler(SelectedShapeChangedEventArgs args)
         {
-            _selectedShapeType = args.SelectedShape;
+            _selectedShapeType = args.SelectedShapeType;
         }
 
         private void DrawingGeometryToCanvas()
@@ -364,9 +451,10 @@ namespace WpfPracticeDemo.Views
                 Size = new Size(Canvas.ActualWidth, Canvas.ActualHeight)
             };
 
-            var graphic = _geometryService.GetGeometry(_selectedShapeType, GeometryType.Shape, _canvasLeftButtonDownPoint, _canvasLeftButtonUpPoint);
+            var shape = CreateShape(_selectedShapeType);
+            var graphic = _geometryService.GetGeometry(shape, GeometryType.Shape, _canvasLeftButtonDownPoint, _canvasLeftButtonUpPoint,true);
 
-            if (_geometryService.IsGeometryValidation(_selectedShapeType, graphic, canvasRect))
+            if (_geometryService.IsGeometryValidation(shape, graphic, canvasRect))
             {
                 Path path = new Path()
                 {
@@ -375,7 +463,7 @@ namespace WpfPracticeDemo.Views
                     StrokeThickness = 5
                 };
 
-                _graphics.Add(new DemoGraphicInfomation() { Shape = _selectedShapeType, GraphicPath = path });
+                _graphics.Add(new DemoGraphicInfomation() { Shape = shape, GraphicPath = path });
 
                 this.Canvas.Children.Add(path);
             }
@@ -383,7 +471,7 @@ namespace WpfPracticeDemo.Views
 
         private void Path_PreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
-
+            e.Handled = true;
         }
 
         private void Path_MouseLeave(object sender, MouseEventArgs e)
@@ -397,12 +485,26 @@ namespace WpfPracticeDemo.Views
         }
 
         private void Path_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
-        {
-            var element = sender as Path;
+        {            
+            var element = sender as Path;            
+            
+            if (_selectedGraphics.Any(x => x.GraphicPath.Equals(element)))
+            {
+                return;
+            }
 
-            element.Stroke = new SolidColorBrush(Colors.Blue);
+            var graphicInfo = _graphics.First(x => x.GraphicPath.Equals(element));
 
-            _selectedGraphics.Add(_graphics.First(x => x.GraphicPath.Equals(element)));
+            var shapeSelectedAdornerGeometry = _geometryService.GetGeometry(graphicInfo.Shape, GeometryType.Selected, _canvasLeftButtonDownPoint, _canvasLeftButtonUpPoint, false);
+
+            ShapeSelectedAdorner shapeSelectedAdorner = new ShapeSelectedAdorner(element,shapeSelectedAdornerGeometry);
+
+            AdornerLayer.GetAdornerLayer(element)?.Add(shapeSelectedAdorner);
+
+            _shapeSelectedAdorners.Add(shapeSelectedAdorner);
+
+            _selectedGraphics.Add(graphicInfo);
+
         }
 
         private void OperationTypeChangedHandler(OperationType operationType)
@@ -418,6 +520,7 @@ namespace WpfPracticeDemo.Views
             }
             else
             {
+                _selectedShapeType = ShapeType.Rectangle;
                 ManageSelectedShapeChangedSubscribe(false);
                 UpdatePathEventSubscribe(true);
             }
@@ -441,6 +544,22 @@ namespace WpfPracticeDemo.Views
             foreach (var item in _graphics)
             {
                 ManagePathEventSubscribe(item.GraphicPath, subscribe);
+            }
+        }
+
+        private ShapeBase CreateShape(ShapeType shapeType)
+        {
+            switch (shapeType)
+            {
+                case ShapeType.Line:
+                    return new LineShape();
+
+                case ShapeType.Rectangle:
+                    return new RectangleShape();
+                case ShapeType.Circle:
+                    return new CircleShape();
+                default:
+                    return new LineShape();
             }
         }
     }

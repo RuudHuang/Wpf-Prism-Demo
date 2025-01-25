@@ -5,6 +5,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using WpfPracticeDemo.Enums;
 
 namespace WpfPracticeDemo.Models
 {
@@ -14,7 +15,7 @@ namespace WpfPracticeDemo.Models
 
         public string ShapeMenuName {  get; set; }
 
-        public ObservableCollection<ShapeBase> Shapes { get;} = new ObservableCollection<ShapeBase>();
+        public ObservableCollection<string> ShapeTypes { get;} = new ObservableCollection<string>();
 
         public bool IsExpanded
         {
