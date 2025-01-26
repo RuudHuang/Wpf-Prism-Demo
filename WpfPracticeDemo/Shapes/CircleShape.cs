@@ -156,7 +156,7 @@ namespace WpfPracticeDemo.Shapes
                 var centerPointInTopLine = new Point(selectedRect.Location.X + selectedRect.Width / 2, selectedRect.Location.Y);
                 var centerPointInLeftLine = new Point(selectedRect.Location.X, selectedRect.Location.Y + selectedRect.Height / 2);
                 var centerPointInRightLine = new Point(selectedRect.Location.X + selectedRect.Width, selectedRect.Location.Y + selectedRect.Height / 2);
-                var centerPointInBottomLine = new Point(selectedRect.Location.X + selectedRect.Width / 2, selectedRect.Location.Y + selectedRect.Height / 2);
+                var centerPointInBottomLine = new Point(selectedRect.Location.X + selectedRect.Width / 2, selectedRect.Location.Y + selectedRect.Height);
 
                 var distanToRectTopLine = CalculateDistanceBetweenTwoPoint(circleCenter, centerPointInTopLine);
                 var distanToRectLeftLine = CalculateDistanceBetweenTwoPoint(circleCenter, centerPointInLeftLine);
