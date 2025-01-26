@@ -17,7 +17,7 @@ namespace WpfPracticeDemo.Shapes
 
         public override ShapeType Type => ShapeType.Line;
 
-        public override Geometry GetRelativeGeometry(Geometry orignalGeometry, ShapeBase shape, GeometryType geometryType, Point leftButtonDownPoint, Point leftButtonUpPoint, bool isUpdateGeometry)
+        public override Geometry GetRelativeGeometry(Geometry orignalGeometry, ShapeBase shape, GeometryType geometryType, Point leftButtonDownPoint, Point leftButtonUpPoint)
         {
             var deltaPoint = GetDeltaPoint(leftButtonDownPoint, leftButtonUpPoint);
             var baseGeometry = orignalGeometry as LineGeometry;
@@ -30,11 +30,6 @@ namespace WpfPracticeDemo.Shapes
                 EndPoint = new Point(baseGeometryEndPoint.X + deltaPoint.X, baseGeometryEndPoint.Y + deltaPoint.Y)
             };
 
-            if (isUpdateGeometry)
-            { 
-               _currentShapeGeometry = lineGeometry;
-            }
-
             return lineGeometry;
         }
 
@@ -44,18 +39,13 @@ namespace WpfPracticeDemo.Shapes
             throw new NotImplementedException();
         }
 
-        protected override Geometry CreateShapeGeometry(Point leftButtonDownPoint, Point leftButtonUpPoint, bool updateOrignalGeometry)
+        protected override Geometry CreateShapeGeometry(Point leftButtonDownPoint, Point leftButtonUpPoint)
         {
             LineGeometry lineGeometry = new LineGeometry()
             {
                 StartPoint = leftButtonDownPoint,
                 EndPoint = leftButtonUpPoint
             };
-
-            if (updateOrignalGeometry)
-            { 
-               _currentShapeGeometry = lineGeometry;
-            }
 
             return lineGeometry;
         }

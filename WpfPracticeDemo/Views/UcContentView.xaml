@@ -15,7 +15,11 @@
     </helpers:EventToCommandHelpercs.EventTrigger>
     <AdornerDecorator>
         <Canvas Name="Canvas"
-                Background="LightGray" />
+                Background="LightGray" >
+            <Canvas.RenderTransform>
+                <ScaleTransform x:Name="CanvasSaleTransform"/>
+            </Canvas.RenderTransform>
+        </Canvas>
     </AdornerDecorator>
 
 </UserControl>

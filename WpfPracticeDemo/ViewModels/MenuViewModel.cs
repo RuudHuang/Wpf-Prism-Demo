@@ -10,6 +10,7 @@ using System.Windows.Input;
 using WpfPracticeDemo.Commands;
 using WpfPracticeDemo.Enums;
 using WpfPracticeDemo.Events;
+using WpfPracticeDemo.Interfaces;
 using WpfPracticeDemo.Views;
 
 namespace WpfPracticeDemo.ViewModels
@@ -18,6 +19,8 @@ namespace WpfPracticeDemo.ViewModels
     {
 
         private OperationType _selectedOperationType;
+
+        private readonly IOperationTypeService _operationTypeService;
 
         public ObservableCollection<OperationType> OperationTypes { get; set; }
 
@@ -28,30 +31,22 @@ namespace WpfPracticeDemo.ViewModels
             {
                 if (SetProperty(ref _selectedOperationType, value))
                 {
-                    _eventAggregator.GetEvent<OperationTypeChangedEvent>().Publish(value);
+                    _operationTypeService.SetOperationType(value);
                 }
             }
         }
 
-        public ICommand TestCommand { get; set; }
-
-        private readonly IRegionManager _regionManager;
-
-        public MenuViewModel(IRegionManager regionManager,IEventAggregator eventAggregator):base(eventAggregator)
+        public MenuViewModel(IEventAggregator eventAggregator,
+                             IOperationTypeService operationTypeService)
+                       :base(eventAggregator)
         {
-            _regionManager = regionManager;
-            TestCommand = new DemoCommand(Navigate);
+            _operationTypeService = operationTypeService;            
 
             OperationTypes = new ObservableCollection<OperationType>()
             {
-               OperationType.DrawGraphic,
+                OperationType.DrawGraphic,
                 OperationType.Select
             };
-        }
-
-        private void Navigate()
-        {
-            _regionManager.RequestNavigate(Constants.DemoRegionConstants.ContentRegionName, nameof(UcShapeOptionView));
         }
 
         protected override void OnLoaded(object parameter)

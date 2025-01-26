@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace WpfPracticeDemo.Enums
 {
-    internal enum OperationType
+    public enum OperationType
     {
         DrawGraphic,
 

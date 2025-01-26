@@ -35,11 +35,14 @@ namespace WpfPracticeDemo.BootStrapper
         {
             containerRegistry.RegisterForNavigation<MainWindow, MainWindowViewModel>();
             containerRegistry.RegisterForNavigation<UcMenuView, MenuViewModel>();
-            containerRegistry.RegisterForNavigation<UcShapeOptionView, OperationViewModel>();
+            containerRegistry.RegisterForNavigation<UcShapeOptionView, ShapeOptionViewModel>();
             containerRegistry.RegisterForNavigation<UcContentView, ContentViewModel>();
             containerRegistry.RegisterSingleton<IDemoRegionNavigateService, DemoRegionNavigateService>();              
             containerRegistry.RegisterSingleton<IStartActionService, StartActionService>();
             containerRegistry.RegisterSingleton<IGeometryService, GeometryService>();
+
+            containerRegistry.RegisterSingleton<IOperationTypeService, OperationTypeService>();
+            containerRegistry.RegisterSingleton<IDrawingShapeTypeService, DrawingShapeTypeService>();
         }
 
         private void InitializeStartActions()

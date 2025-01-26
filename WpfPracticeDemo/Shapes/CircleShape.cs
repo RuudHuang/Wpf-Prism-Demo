@@ -16,7 +16,7 @@ namespace WpfPracticeDemo.Shapes
 
         public override ShapeType Type => ShapeType.Circle;
 
-        protected override Geometry CreateShapeGeometry(Point leftButtonDownPoint, Point leftButtonUpPoint, bool updateOrignalGeometry)
+        protected override Geometry CreateShapeGeometry(Point leftButtonDownPoint, Point leftButtonUpPoint)
         {
             var circleRadius = GetRadius(leftButtonDownPoint, leftButtonUpPoint);
 
@@ -26,11 +26,6 @@ namespace WpfPracticeDemo.Shapes
                 RadiusX = circleRadius,
                 RadiusY = circleRadius
             };
-
-            if (updateOrignalGeometry)
-            {
-                _currentShapeGeometry = ellipseGeometry;
-            }
 
             return ellipseGeometry;
         }
@@ -107,7 +102,7 @@ namespace WpfPracticeDemo.Shapes
             return geometryGroup;
         }
 
-        public override Geometry GetRelativeGeometry(Geometry orignalGeometry, ShapeBase shape, GeometryType geometryType, Point leftButtonDownPoint, Point leftButtonUpPoint, bool isUpdateGeometry)
+        public override Geometry GetRelativeGeometry(Geometry orignalGeometry, ShapeBase shape, GeometryType geometryType, Point leftButtonDownPoint, Point leftButtonUpPoint)
         {
             var deltaPoint = GetDeltaPoint(leftButtonDownPoint, leftButtonUpPoint);
             var orignalGeometryCenterPoint = (orignalGeometry as EllipseGeometry).Center;
@@ -119,11 +114,6 @@ namespace WpfPracticeDemo.Shapes
                 RadiusX = circleRadius,
                 RadiusY = circleRadius
             };
-
-            if (isUpdateGeometry)
-            {
-                _currentShapeGeometry = ellipseGeometry;
-            }
 
             return ellipseGeometry;
         }

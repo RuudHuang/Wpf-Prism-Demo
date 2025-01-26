@@ -18,7 +18,7 @@ namespace WpfPracticeDemo.Shapes
 
         public override ShapeType Type => ShapeType.Rectangle;
 
-        public override Geometry GetRelativeGeometry(Geometry orignalGeometry, ShapeBase shape, GeometryType geometryType, Point leftButtonDownPoint, Point leftButtonUpPoint, bool isUpdateGeometry)
+        public override Geometry GetRelativeGeometry(Geometry orignalGeometry, ShapeBase shape, GeometryType geometryType, Point leftButtonDownPoint, Point leftButtonUpPoint)
         {
             var deltaPoint = GetDeltaPoint(leftButtonDownPoint, leftButtonUpPoint);
             var orignalGeometryRect = (orignalGeometry as RectangleGeometry).Rect;
@@ -33,11 +33,6 @@ namespace WpfPracticeDemo.Shapes
                 }
             };
 
-            if (isUpdateGeometry)
-            {
-                _currentShapeGeometry = rectangleGeometry;
-            }
-
             return rectangleGeometry;
         }
 
@@ -46,7 +41,7 @@ namespace WpfPracticeDemo.Shapes
             throw new NotImplementedException();
         }
 
-        protected override Geometry CreateShapeGeometry(Point leftButtonDownPoint, Point leftButtonUpPoint, bool updateOrignalGeometry)
+        protected override Geometry CreateShapeGeometry(Point leftButtonDownPoint, Point leftButtonUpPoint)
         {
             RectangleGeometry rectangleGeometry = new RectangleGeometry()
             {
@@ -56,11 +51,6 @@ namespace WpfPracticeDemo.Shapes
                     Size = GetRectangleSize(leftButtonDownPoint, leftButtonUpPoint)
                 }
             };
-
-            if (updateOrignalGeometry)
-            { 
-              _currentShapeGeometry = rectangleGeometry;
-            }
 
             return rectangleGeometry;
         }

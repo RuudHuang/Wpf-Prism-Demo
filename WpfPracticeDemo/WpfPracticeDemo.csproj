@@ -84,9 +84,8 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Adorners\LoadingAdorner.cs" />
     <Compile Include="Adorners\ShapeDrawingAdorner.cs" />
-    <Compile Include="Adorners\ShapeMouseEnterAdorner.cs" />
-    <Compile Include="Adorners\ShapeSelectedAdorner.cs" />
     <Compile Include="BootStrapper\DemoBootStrapper.cs" />
     <Compile Include="Commands\DemoCommand.cs" />
     <Compile Include="Constants\DemoRegionConstants.cs" />
@@ -95,14 +94,14 @@
     <Compile Include="Enums\ShapeType.cs" />
     <Compile Include="Enums\StartActionResult.cs" />
     <Compile Include="Events\NotifyInitializeDataAfterWindowLoadedEvent.cs" />
-    <Compile Include="Events\OperationTypeChangedEvent.cs" />
-    <Compile Include="Events\SelectedShapeChangedEvent.cs" />
     <Compile Include="Events\StartActionProgressChangedEvent.cs" />
     <Compile Include="Helpers\AdornerHelper.cs" />
     <Compile Include="Helpers\EventToCommandHelpercs.cs" />
     <Compile Include="Helpers\ThreadHelper.cs" />
     <Compile Include="Interfaces\IDemoRegionNavigateService.cs" />
     <Compile Include="Interfaces\IGeometryService.cs" />
+    <Compile Include="Interfaces\IOperationTypeService.cs" />
+    <Compile Include="Interfaces\IDrawingShapeTypeService.cs" />
     <Compile Include="Interfaces\IStartAction.cs" />
     <Compile Include="Interfaces\IStartActionService.cs" />
     <Compile Include="MainWindowViewModel.cs" />
@@ -114,6 +113,8 @@
     <Compile Include="Models\StartActionProgressChangedEventArgs.cs" />
     <Compile Include="Services\DemoRegionNavigateService.cs" />
     <Compile Include="Services\GeometryService.cs" />
+    <Compile Include="Services\DrawingShapeTypeService.cs" />
+    <Compile Include="Services\OperationTypeService.cs" />
     <Compile Include="Services\StartActionService.cs" />
     <Compile Include="Shapes\CircleShape.cs" />
     <Compile Include="Shapes\LineShape.cs" />
@@ -123,7 +124,10 @@
     <Compile Include="ViewModels\ContentViewModel.cs" />
     <Compile Include="ViewModels\DemoVmBase.cs" />
     <Compile Include="ViewModels\MenuViewModel.cs" />
-    <Compile Include="ViewModels\OperationViewModel.cs" />
+    <Compile Include="ViewModels\ShapeOptionViewModel.cs" />
+    <Compile Include="Views\AdornerLoadingView.xaml.cs">
+      <DependentUpon>AdornerLoadingView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\UcBootAdvancedActionView.xaml.cs">
       <DependentUpon>UcBootAdvancedActionView.xaml</DependentUpon>
     </Compile>
@@ -149,6 +153,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="Resources\DemoBaseDictionary.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\AdornerLoadingView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
