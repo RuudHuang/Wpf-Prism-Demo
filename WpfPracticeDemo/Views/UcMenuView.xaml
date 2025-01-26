@@ -14,8 +14,19 @@
         <models:DemoEventTrigger EventName="Loaded"
                                  TargetCommand="{Binding LoadedCommand}" />
     </helpers:EventToCommandHelpercs.EventTrigger>
-    <StackPanel>
-        <ComboBox ItemsSource="{Binding OperationTypes}"
-                  SelectedItem="{Binding SelectedOperationType}" />
-    </StackPanel>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="auto" />
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+        <ListBox BorderThickness="0"
+                 ItemsSource="{Binding OperationTypes}"
+                 SelectedItem="{Binding SelectedOperationType}">
+            <ListBox.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <StackPanel Orientation="Horizontal" />
+                </ItemsPanelTemplate>
+            </ListBox.ItemsPanel>
+        </ListBox>
+    </Grid>
 </UserControl>

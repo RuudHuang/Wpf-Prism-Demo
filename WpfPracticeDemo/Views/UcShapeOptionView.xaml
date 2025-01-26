@@ -25,9 +25,9 @@
                         <ControlTemplate TargetType="{x:Type ListBoxItem}">
                             <Expander Header="{Binding ShapeMenuName}"
                                       IsExpanded="{Binding IsExpanded}">
-                                <ListBox ItemsSource="{Binding ShapeTypes}"
-                                         SelectedItem="{Binding ElementName=ShapeMenus, Path=DataContext.SelectedShapeType}">
-                                </ListBox>
+                                <ListBox HorizontalContentAlignment="Center"
+                                         ItemsSource="{Binding ShapeTypes}"
+                                         SelectedItem="{Binding ElementName=ShapeMenus, Path=DataContext.SelectedShapeType}" />
                             </Expander>
                         </ControlTemplate>
                     </Setter.Value>

@@ -17,21 +17,21 @@ namespace WpfPracticeDemo.ViewModels
 {
     internal class MenuViewModel:DemoVmBase
     {
-
-        private OperationType _selectedOperationType;
+        private string _selectedOperationType;
 
         private readonly IOperationTypeService _operationTypeService;
 
-        public ObservableCollection<OperationType> OperationTypes { get; set; }
+        public ObservableCollection<string> OperationTypes { get; set; }
 
-        public OperationType SelectedOperationType
+        public string SelectedOperationType
         { 
           get { return _selectedOperationType; }
             set 
             {
                 if (SetProperty(ref _selectedOperationType, value))
                 {
-                    _operationTypeService.SetOperationType(value);
+                    var operationType = GetOperationType(value);
+                    _operationTypeService.SetOperationType(operationType);
                 }
             }
         }
@@ -42,16 +42,29 @@ namespace WpfPracticeDemo.ViewModels
         {
             _operationTypeService = operationTypeService;            
 
-            OperationTypes = new ObservableCollection<OperationType>()
+            OperationTypes = new ObservableCollection<string>()
             {
-                OperationType.DrawGraphic,
-                OperationType.Select
+                nameof(OperationType.DrawGraphic),
+                nameof(OperationType.Select)
             };
         }
 
         protected override void OnLoaded(object parameter)
         {            
-            SelectedOperationType = OperationType.DrawGraphic;
+            SelectedOperationType = OperationTypes[0];
+        }
+
+        private OperationType GetOperationType(string operationTypeName)
+        {
+            switch (operationTypeName)
+            { 
+               case nameof(OperationType.Select):
+                    return OperationType.Select;
+                    case nameof(OperationType.DrawGraphic): 
+                    return OperationType.DrawGraphic;
+                default:
+                    return OperationType.DrawGraphic;
+            }
         }
     }
 }

@@ -6,4 +6,29 @@
         <Setter Property="HorizontalAlignment" Value="Center" />
     </Style>
 
+    <Style BasedOn="{StaticResource {x:Type ListBoxItem}}"
+           TargetType="{x:Type ListBoxItem}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ListBoxItem}">
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="ItemBorder" Property="Border.BorderBrush" Value="LightGray" />
+                        </Trigger>
+                        <Trigger Property="IsSelected" Value="True">
+                            <Setter TargetName="ItemBorder" Property="Border.Background" Value="LightBlue" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                    <Border Name="ItemBorder"
+                            Margin="10,5"
+                            Padding="4,2"
+                            BorderThickness="1">
+                        <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                          Content="{TemplateBinding Content}" />
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
 </ResourceDictionary>
