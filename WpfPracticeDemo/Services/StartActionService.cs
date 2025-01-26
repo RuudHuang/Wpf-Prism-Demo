@@ -1,14 +1,9 @@
 ﻿using Prism.Events;
 using Prism.Ioc;
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Threading;
 using WpfPracticeDemo.Enums;
 using WpfPracticeDemo.Events;
 using WpfPracticeDemo.Helpers;
@@ -32,7 +27,7 @@ namespace WpfPracticeDemo.Services
 
         private double TotalPercentage
         {
-            get 
+            get
             {
                 return _startActions.Sum(x => x.StartActionProgressPercentage);
             }
@@ -42,15 +37,15 @@ namespace WpfPracticeDemo.Services
 
         public StartActionService(IEventAggregator eventAggregator,
             IContainerProvider containerProvider)
-        { 
-           _startActions = new ObservableCollection<IStartAction>();
+        {
+            _startActions = new ObservableCollection<IStartAction>();
             _eventAggregator = eventAggregator;
             _containerProvider = containerProvider;
         }
 
         public Task<StartActionResult> ExcuteStartActions()
         {
-            var startActionTask= Task.Run(() =>
+            var startActionTask = Task.Run(() =>
             {
                 StartActionResult result = default;
 
@@ -75,32 +70,32 @@ namespace WpfPracticeDemo.Services
             }); ;
 
             return startActionTask;
-        }        
+        }
 
         private void UpdateProgress(string actionName, double excutedPercentage)
         {
-           Task.Run(() => 
-            {
-                StartActionProgressChangedEventArgs startActionProgressChangedEventArgs = new StartActionProgressChangedEventArgs()
-                {
-                    StartActionName = actionName,
-                    PercentageInAllAction = excutedPercentage / TotalPercentage
-                };
+            Task.Run(() =>
+             {
+                 StartActionProgressChangedEventArgs startActionProgressChangedEventArgs = new StartActionProgressChangedEventArgs()
+                 {
+                     StartActionName = actionName,
+                     PercentageInAllAction = excutedPercentage / TotalPercentage
+                 };
 
-                _eventAggregator.GetEvent<StartActionProgressChangedEvent>().Publish(startActionProgressChangedEventArgs);
+                 _eventAggregator.GetEvent<StartActionProgressChangedEvent>().Publish(startActionProgressChangedEventArgs);
 
-            }).Wait();            
+             }).Wait();
         }
 
         public void ShowBootAdvancedView()
         {
             if (_bootAdvancedActionView == null)
             {
-                _bootAdvancedActionView= _containerProvider.Resolve<UcBootAdvancedActionView>();
+                _bootAdvancedActionView = _containerProvider.Resolve<UcBootAdvancedActionView>();
                 var bootAdvancedActionViewModel = _containerProvider.Resolve<BootAdvancedActionViewModel>();
                 _bootAdvancedActionView.DataContext = bootAdvancedActionViewModel;
-            }                        
-            
+            }
+
             _bootAdvancedActionView.ShowDialog();
         }
 
@@ -109,7 +104,7 @@ namespace WpfPracticeDemo.Services
             ThreadHelper.ExcutedInUiThread(() =>
             {
                 _bootAdvancedActionView.DialogResult = true;
-            });            
+            });
         }
     }
 }

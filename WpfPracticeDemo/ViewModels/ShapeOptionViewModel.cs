@@ -1,17 +1,9 @@
 ﻿using Prism.Events;
-using Prism.Mvvm;
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using WpfPracticeDemo.Enums;
-using WpfPracticeDemo.Events;
 using WpfPracticeDemo.Interfaces;
 using WpfPracticeDemo.Models;
-using WpfPracticeDemo.Services;
-using WpfPracticeDemo.Shapes;
 
 namespace WpfPracticeDemo.ViewModels
 {
@@ -40,8 +32,8 @@ namespace WpfPracticeDemo.ViewModels
             set
             {
                 if (SetProperty(ref _selectedShapeType, value))
-                {                    
-                    var selectedDrawingShapeType=GetShapeType(value);     
+                {
+                    var selectedDrawingShapeType = GetShapeType(value);
                     _drawingShapeTypeService.SetSelectedShapeType(selectedDrawingShapeType);
                 }
             }
@@ -49,10 +41,10 @@ namespace WpfPracticeDemo.ViewModels
 
         public ShapeOptionViewModel(IEventAggregator eventAggregator,
                                   IDrawingShapeTypeService drawingShapeTypeService,
-                                  IOperationTypeService operationTypeService) 
+                                  IOperationTypeService operationTypeService)
                            : base(eventAggregator)
         {
-            _drawingShapeTypeService=drawingShapeTypeService;
+            _drawingShapeTypeService = drawingShapeTypeService;
             _operationTypeService = operationTypeService;
             _shapeMenus = new ObservableCollection<OperationShapeMenu>();
         }
@@ -67,7 +59,7 @@ namespace WpfPracticeDemo.ViewModels
 
             shapeMenu.ShapeTypes.Add(nameof(ShapeType.Line));
             shapeMenu.ShapeTypes.Add(nameof(ShapeType.Rectangle));
-            shapeMenu.ShapeTypes.Add(nameof(ShapeType.Circle));            
+            shapeMenu.ShapeTypes.Add(nameof(ShapeType.Circle));
 
             _shapeMenus.Add(shapeMenu);
 
@@ -88,7 +80,7 @@ namespace WpfPracticeDemo.ViewModels
 
         private void InitializeSelectedShape()
         {
-            SelectedShapeType =ShapeMenus.FirstOrDefault(x => x.ShapeMenuName.Equals(NormalShapeName)).ShapeTypes[0];
+            SelectedShapeType = ShapeMenus.FirstOrDefault(x => x.ShapeMenuName.Equals(NormalShapeName)).ShapeTypes[0];
         }
 
         private void ManageSubscribeForOperationShapeMenu(bool subscribe)
@@ -142,7 +134,7 @@ namespace WpfPracticeDemo.ViewModels
         {
             if (subscribe)
             {
-                _operationTypeService.OperationTypeChanged += OperationTypeChangedHandler;                
+                _operationTypeService.OperationTypeChanged += OperationTypeChangedHandler;
             }
             else
             {
@@ -155,9 +147,9 @@ namespace WpfPracticeDemo.ViewModels
         {
             if (operationType.Equals(OperationType.Select))
             {
-                SelectedShapeType =ShapeMenus.FirstOrDefault(x => x.ShapeMenuName.Equals(NormalShapeName)).ShapeTypes.FirstOrDefault(x => x.Equals(nameof(ShapeType.Rectangle)));
+                SelectedShapeType = ShapeMenus.FirstOrDefault(x => x.ShapeMenuName.Equals(NormalShapeName)).ShapeTypes.FirstOrDefault(x => x.Equals(nameof(ShapeType.Rectangle)));
             }
-        }        
+        }
 
         private ShapeType GetShapeType(string shapeTypeName)
         {

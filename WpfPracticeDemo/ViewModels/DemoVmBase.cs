@@ -1,18 +1,13 @@
 ﻿using Prism.Events;
 using Prism.Mvvm;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Input;
 using WpfPracticeDemo.Commands;
 
 namespace WpfPracticeDemo.ViewModels
 {
-    public abstract class DemoVmBase:BindableBase
-    {        
-        public ICommand LoadedCommand { get;private set; }        
+    public abstract class DemoVmBase : BindableBase
+    {
+        public ICommand LoadedCommand { get; private set; }
 
         protected readonly IEventAggregator _eventAggregator;
 
@@ -25,10 +20,10 @@ namespace WpfPracticeDemo.ViewModels
 
         private void Initialize()
         {
-            LoadedCommand = new DemoCommand(OnLoaded);            
+            LoadedCommand = new DemoCommand(OnLoaded);
         }
 
-        protected abstract void OnLoaded(object parameter);        
+        protected abstract void OnLoaded(object parameter);
 
     }
 }

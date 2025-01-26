@@ -1,9 +1,6 @@
-﻿using Prism;
-using Prism.Ioc;
-using Prism.Services.Dialogs;
+﻿using Prism.Ioc;
 using Prism.Unity;
 using System.Windows;
-using WpfPracticeDemo.Enums;
 using WpfPracticeDemo.Interfaces;
 using WpfPracticeDemo.Services;
 using WpfPracticeDemo.StartActions;
@@ -37,7 +34,7 @@ namespace WpfPracticeDemo.BootStrapper
             containerRegistry.RegisterForNavigation<UcMenuView, MenuViewModel>();
             containerRegistry.RegisterForNavigation<UcShapeOptionView, ShapeOptionViewModel>();
             containerRegistry.RegisterForNavigation<UcContentView, ContentViewModel>();
-            containerRegistry.RegisterSingleton<IDemoRegionNavigateService, DemoRegionNavigateService>();              
+            containerRegistry.RegisterSingleton<IDemoRegionNavigateService, DemoRegionNavigateService>();
             containerRegistry.RegisterSingleton<IStartActionService, StartActionService>();
             containerRegistry.RegisterSingleton<IGeometryService, GeometryService>();
 
@@ -47,13 +44,13 @@ namespace WpfPracticeDemo.BootStrapper
 
         private void InitializeStartActions()
         {
-                       
+
         }
 
         public static void ShutDownApplication()
         {
             Application.Current.Shutdown();
-        }        
-        
+        }
+
     }
 }

@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Documents;
 using System.Windows.Media;
 
@@ -17,12 +12,12 @@ namespace WpfPracticeDemo.Adorners
         private Color _adornerColor;
 
         private DashStyle _adornerDashStyle;
-        
+
 
         public ShapeDrawingAdorner(UIElement adornedElement,
                                    Geometry shapeAdorner,
                                    Color adornerColor,
-                                   DashStyle dashStyle) 
+                                   DashStyle dashStyle)
             : base(adornedElement)
         {
             _shapeAdorner = shapeAdorner;

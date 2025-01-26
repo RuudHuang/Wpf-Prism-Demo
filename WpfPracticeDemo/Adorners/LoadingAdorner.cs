@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Documents;
 using System.Windows.Media;
 
@@ -12,14 +7,14 @@ namespace WpfPracticeDemo.Adorners
     internal class LoadingAdorner : Adorner
     {
         private UIElement _elementOnAdorner;
-        
-        public LoadingAdorner(UIElement adornedElement, 
-                              UIElement elementOnAdorner1) 
+
+        public LoadingAdorner(UIElement adornedElement,
+                              UIElement elementOnAdorner1)
                        : base(adornedElement)
         {
-            _elementOnAdorner = elementOnAdorner1;            
+            _elementOnAdorner = elementOnAdorner1;
 
-            AddVisualChild(elementOnAdorner1);            
+            AddVisualChild(elementOnAdorner1);
         }
 
         protected override Visual GetVisualChild(int index)
@@ -27,16 +22,16 @@ namespace WpfPracticeDemo.Adorners
             if (index == 0)
             {
                 return _elementOnAdorner;
-            }     
-            
+            }
+
             return base.GetVisualChild(index);
         }
 
         protected override int VisualChildrenCount => 1;
-        
+
         protected override Size MeasureOverride(Size constraint)
-        {            
-            _elementOnAdorner.Measure(constraint);            
+        {
+            _elementOnAdorner.Measure(constraint);
             return base.MeasureOverride(constraint);
         }
 
@@ -44,9 +39,8 @@ namespace WpfPracticeDemo.Adorners
         {
             return null;
         }
-
         protected override Size ArrangeOverride(Size finalSize)
-        {            
+        {
             return base.ArrangeOverride(finalSize);
         }
 

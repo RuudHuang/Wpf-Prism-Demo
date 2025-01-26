@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media;
 using WpfPracticeDemo.Enums;
@@ -68,7 +64,7 @@ namespace WpfPracticeDemo.Shapes
 
             EllipseGeometry ellipseGeometryLeft = new EllipseGeometry()
             {
-                Center = new Point(circleGeometryCenter.X-circleGeometryRadius,circleGeometryCenter.Y),
+                Center = new Point(circleGeometryCenter.X - circleGeometryRadius, circleGeometryCenter.Y),
                 RadiusX = ShapeSelectedAdornerRadius,
                 RadiusY = ShapeSelectedAdornerRadius
             };
@@ -77,7 +73,7 @@ namespace WpfPracticeDemo.Shapes
 
             EllipseGeometry ellipseGeometryBottom = new EllipseGeometry()
             {
-                Center = new Point(circleGeometryCenter.X,circleGeometryCenter.Y+circleGeometryRadius),
+                Center = new Point(circleGeometryCenter.X, circleGeometryCenter.Y + circleGeometryRadius),
                 RadiusX = ShapeSelectedAdornerRadius,
                 RadiusY = ShapeSelectedAdornerRadius
             };
@@ -121,17 +117,17 @@ namespace WpfPracticeDemo.Shapes
         public override bool IsGeometryPointInSelectedRect(Geometry shapeGeometry, Rect selectedRect)
         {
             var circleCenter = (_currentShapeGeometry as EllipseGeometry).Center;
-            var circleRadius= (_currentShapeGeometry as EllipseGeometry).RadiusX;
+            var circleRadius = (_currentShapeGeometry as EllipseGeometry).RadiusX;
 
             var selectRectPointLeftTop = selectedRect.Location;
-            var selectRectPointLeftBottom = new Point(selectedRect.Location.X,selectedRect.Location.Y+selectedRect.Height);
-            var selectRectPointRightTop = new Point(selectedRect.Location.X+selectedRect.Width, selectedRect.Location.Y);
-            var selectRectPointRightBottom = new Point(selectedRect.Location.X+selectedRect.Width, selectedRect.Location.Y + selectedRect.Height);
+            var selectRectPointLeftBottom = new Point(selectedRect.Location.X, selectedRect.Location.Y + selectedRect.Height);
+            var selectRectPointRightTop = new Point(selectedRect.Location.X + selectedRect.Width, selectedRect.Location.Y);
+            var selectRectPointRightBottom = new Point(selectedRect.Location.X + selectedRect.Width, selectedRect.Location.Y + selectedRect.Height);
 
             var distanceToRectTopLeft = CalculateDistanceBetweenTwoPoint(circleCenter, selectRectPointLeftTop);
             var distanceToRectTopRight = CalculateDistanceBetweenTwoPoint(circleCenter, selectRectPointRightTop);
             var distanceToRectBottomLeft = CalculateDistanceBetweenTwoPoint(circleCenter, selectRectPointLeftBottom);
-            var distanceToRectBottomRight = CalculateDistanceBetweenTwoPoint(circleCenter, selectRectPointRightBottom);            
+            var distanceToRectBottomRight = CalculateDistanceBetweenTwoPoint(circleCenter, selectRectPointRightBottom);
 
             if (distanceToRectTopLeft < circleRadius
                 || distanceToRectTopRight < circleRadius
@@ -165,7 +161,7 @@ namespace WpfPracticeDemo.Shapes
             }
         }
 
-        private static double CalculateDistanceBetweenTwoPoint(Point point1,Point point2)
+        private static double CalculateDistanceBetweenTwoPoint(Point point1, Point point2)
         {
             return Math.Sqrt(Math.Pow(point1.X - point2.X, 2) + Math.Pow(point1.Y - point2.Y, 2));
         }

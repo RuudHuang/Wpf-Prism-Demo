@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media;
 using WpfPracticeDemo.Enums;
@@ -11,7 +7,7 @@ using WpfPracticeDemo.Models;
 namespace WpfPracticeDemo.Shapes
 {
     internal class LineShape : ShapeBase
-    {        
+    {
 
         public override string Name => "Line";
 
@@ -71,7 +67,7 @@ namespace WpfPracticeDemo.Shapes
                 RadiusX = ShapeSelectedAdornerRadius,
                 RadiusY = ShapeSelectedAdornerRadius
             };
-            geometryGroup.Children.Add(ellipseGeometryEndPoint);           
+            geometryGroup.Children.Add(ellipseGeometryEndPoint);
 
             return geometryGroup;
         }
@@ -98,9 +94,9 @@ namespace WpfPracticeDemo.Shapes
         public override bool IsGeometryPointInSelectedRect(Geometry shapeGeometry, Rect selectedRect)
         {
             var lineGeometry = _currentShapeGeometry as LineGeometry;
-            
-            var lineStartPoint= lineGeometry.StartPoint;
-            var lineEndPoint= lineGeometry.EndPoint;
+
+            var lineStartPoint = lineGeometry.StartPoint;
+            var lineEndPoint = lineGeometry.EndPoint;
 
             if ((lineStartPoint.X < selectedRect.Location.X && lineEndPoint.X < selectedRect.Location.X)
                 || (lineStartPoint.X > selectedRect.Location.X + selectedRect.Width && lineEndPoint.X > selectedRect.Location.X + selectedRect.Width)

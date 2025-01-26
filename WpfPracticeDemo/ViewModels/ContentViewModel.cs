@@ -1,9 +1,4 @@
 ﻿using Prism.Events;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace WpfPracticeDemo.ViewModels
 {
@@ -15,7 +10,7 @@ namespace WpfPracticeDemo.ViewModels
 
         protected override void OnLoaded(object parameter)
         {
-            
+
         }
     }
 }

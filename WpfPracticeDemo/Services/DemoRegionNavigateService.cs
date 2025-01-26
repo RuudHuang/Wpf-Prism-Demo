@@ -1,15 +1,10 @@
 ﻿using Prism.Regions;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using WpfPracticeDemo.Interfaces;
 using WpfPracticeDemo.Views;
 
 namespace WpfPracticeDemo.Services
 {
-    internal class DemoRegionNavigateService: IDemoRegionNavigateService
+    internal class DemoRegionNavigateService : IDemoRegionNavigateService
     {
         private IRegionManager _regionManager;
 

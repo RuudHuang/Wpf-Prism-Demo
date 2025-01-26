@@ -1,18 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media;
-using System.Windows.Shapes;
 using WpfPracticeDemo.Enums;
 using WpfPracticeDemo.Models;
 
 namespace WpfPracticeDemo.Shapes
 {
     internal class RectangleShape : ShapeBase
-    {       
+    {
 
         public override string Name => "Rectangle";
 
@@ -58,7 +53,7 @@ namespace WpfPracticeDemo.Shapes
         protected override Geometry CreateShapeSelectedGeometry(Point leftButtonDownPoint, Point leftButtonUpPoint)
         {
             GeometryGroup geometryGroup = new GeometryGroup();
-            var orignalRect = (_currentShapeGeometry as RectangleGeometry).Rect;            
+            var orignalRect = (_currentShapeGeometry as RectangleGeometry).Rect;
 
             EllipseGeometry ellipseGeometryLeftTop = new EllipseGeometry()
             {
@@ -71,7 +66,7 @@ namespace WpfPracticeDemo.Shapes
 
             EllipseGeometry ellipseGeometryLeftBottom = new EllipseGeometry()
             {
-                Center =new Point(orignalRect.Location.X,orignalRect.Location.Y+orignalRect.Height),
+                Center = new Point(orignalRect.Location.X, orignalRect.Location.Y + orignalRect.Height),
                 RadiusX = ShapeSelectedAdornerRadius,
                 RadiusY = ShapeSelectedAdornerRadius
             };
@@ -79,7 +74,7 @@ namespace WpfPracticeDemo.Shapes
 
             EllipseGeometry ellipseGeometryRightTop = new EllipseGeometry()
             {
-                Center = new Point(orignalRect.Location.X+orignalRect.Width, orignalRect.Location.Y),
+                Center = new Point(orignalRect.Location.X + orignalRect.Width, orignalRect.Location.Y),
                 RadiusX = ShapeSelectedAdornerRadius,
                 RadiusY = ShapeSelectedAdornerRadius
             };
@@ -162,7 +157,7 @@ namespace WpfPracticeDemo.Shapes
             else
             {
                 return false;
-            }            
+            }
         }
     }
 }

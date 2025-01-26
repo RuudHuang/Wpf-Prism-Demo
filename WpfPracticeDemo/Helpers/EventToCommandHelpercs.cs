@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using System.Windows;
 using WpfPracticeDemo.Models;
 
 namespace WpfPracticeDemo.Helpers
@@ -29,10 +24,10 @@ namespace WpfPracticeDemo.Helpers
         {
             var eventTriggerInfo = GetEventTrigger(d);
 
-            var eventName= eventTriggerInfo.EventName;   
-            var targetCommand= eventTriggerInfo.TargetCommand;
+            var eventName = eventTriggerInfo.EventName;
+            var targetCommand = eventTriggerInfo.TargetCommand;
 
-            if (!string.IsNullOrEmpty(eventName) && targetCommand!=null)
+            if (!string.IsNullOrEmpty(eventName) && targetCommand != null)
             {
                 var eventInfo = d.GetType().GetEvent(eventName);
                 if (eventInfo != null)
@@ -45,7 +40,7 @@ namespace WpfPracticeDemo.Helpers
         private static void RoutedEventHandler(object sender, RoutedEventArgs e)
         {
             var eventTriggerInfo = GetEventTrigger(sender as DependencyObject);
-            var targetCommand= eventTriggerInfo.TargetCommand;
+            var targetCommand = eventTriggerInfo.TargetCommand;
             if (targetCommand != null)
             {
                 targetCommand.Execute(sender);

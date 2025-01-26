@@ -1,11 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Media;
-using System.Windows.Media.Media3D;
 using WpfPracticeDemo.Enums;
 using WpfPracticeDemo.Interfaces;
 using WpfPracticeDemo.Models;
@@ -19,9 +13,9 @@ namespace WpfPracticeDemo.Services
             return shape.CreateGeometry(geometryType, leftButtonDownPoint, leftButtonUpPoint);
         }
 
-        public bool IsGeometryValidation(ShapeBase shape,Geometry shapeGeometry, Rect canvasRect)
+        public bool IsGeometryValidation(ShapeBase shape, Geometry shapeGeometry, Rect canvasRect)
         {
-            return shape.IsGeometryValidation(shapeGeometry,canvasRect);
+            return shape.IsGeometryValidation(shapeGeometry, canvasRect);
         }
 
         public Geometry GetRelativeGeometry(Geometry orignalGeometry, ShapeBase shape, GeometryType geometryType, Point leftButtonDownPoint, Point leftButtonUpPoint)

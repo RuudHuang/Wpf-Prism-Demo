@@ -1,11 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Media;
-using System.Windows.Shapes;
 using WpfPracticeDemo.Enums;
 
 namespace WpfPracticeDemo.Models
@@ -34,7 +28,7 @@ namespace WpfPracticeDemo.Models
             }
         }
 
-        protected abstract Geometry CreateShapeGeometry(Point leftButtonDownPoint, Point leftButtonUpPoint);       
+        protected abstract Geometry CreateShapeGeometry(Point leftButtonDownPoint, Point leftButtonUpPoint);
 
         protected abstract Geometry CreateMouseOverGeometry(Point leftButtonDownPoint, Point leftButtonUpPoint);
         protected abstract Geometry CreateShapeSelectedGeometry(Point leftButtonDownPoint, Point leftButtonUpPoint);
@@ -48,7 +42,7 @@ namespace WpfPracticeDemo.Models
             _currentShapeGeometry = geometry;
         }
 
-        public virtual bool IsGeometryValidation(Geometry shapeGeometry,Rect canvasRect)
+        public virtual bool IsGeometryValidation(Geometry shapeGeometry, Rect canvasRect)
         {
             return true;
         }

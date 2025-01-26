@@ -1,14 +1,6 @@
 ﻿using Prism.Events;
 using Prism.Mvvm;
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
 using System.Windows.Input;
-using System.Windows.Threading;
 using WpfPracticeDemo.BootStrapper;
 using WpfPracticeDemo.Commands;
 using WpfPracticeDemo.Enums;
@@ -19,20 +11,20 @@ using WpfPracticeDemo.Models;
 
 namespace WpfPracticeDemo.ViewModels
 {
-    internal class BootAdvancedActionViewModel:BindableBase
+    internal class BootAdvancedActionViewModel : BindableBase
     {
 
         private readonly IEventAggregator _eventAggregator;
 
         private readonly IStartActionService _startActionService;
 
-        private string _excutingActionName=string.Empty;
+        private string _excutingActionName = string.Empty;
 
         public string ExcutingActionName
-        { 
-           get { return _excutingActionName; }
+        {
+            get { return _excutingActionName; }
 
-            set 
+            set
             {
                 SetProperty(ref _excutingActionName, value);
             }
@@ -43,7 +35,7 @@ namespace WpfPracticeDemo.ViewModels
         public double ProgressValue
         {
             get { return _progressValue; }
-            set 
+            set
             {
                 SetProperty(ref _progressValue, value);
             }
@@ -54,8 +46,8 @@ namespace WpfPracticeDemo.ViewModels
         public BootAdvancedActionViewModel(IEventAggregator eventAggregator,
             IStartActionService startActionService)
         {
-            _eventAggregator= eventAggregator;
-            _startActionService= startActionService;
+            _eventAggregator = eventAggregator;
+            _startActionService = startActionService;
 
             ExcuteStartActionsCommand = new DemoCommand(ExcuteStartActions);
 
@@ -80,13 +72,13 @@ namespace WpfPracticeDemo.ViewModels
             ThreadHelper.ExcutedInUiThread(() =>
             {
                 ExcutingActionName = args.StartActionName;
-                ProgressValue += args.PercentageInAllAction*100;
+                ProgressValue += args.PercentageInAllAction * 100;
             });
         }
 
         private async void ExcuteStartActions(object parameter)
         {
-            var startActionResult=await _startActionService.ExcuteStartActions();
+            var startActionResult = await _startActionService.ExcuteStartActions();
 
             if (startActionResult.Equals(StartActionResult.Failed))
             {
