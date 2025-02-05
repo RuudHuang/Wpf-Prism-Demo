@@ -22,7 +22,7 @@
         <models:DemoEventTrigger EventName="Loaded"
                                  TargetCommand="{Binding ExcuteStartActionsCommand}" />
     </helpers:EventToCommandHelpercs.EventTrigger>
-    <Grid>
+    <Grid Name="MainContentContainer">
         <Grid.RowDefinitions>
             <RowDefinition />
             <RowDefinition />

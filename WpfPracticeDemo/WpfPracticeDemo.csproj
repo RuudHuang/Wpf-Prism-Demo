@@ -84,7 +84,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Adorners\LoadingAdorner.cs" />
+    <Compile Include="Adorners\CommonAdorner.cs" />
     <Compile Include="Adorners\ShapeDrawingAdorner.cs" />
     <Compile Include="BootStrapper\DemoBootStrapper.cs" />
     <Compile Include="Commands\DemoCommand.cs" />

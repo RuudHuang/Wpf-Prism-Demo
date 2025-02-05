@@ -6,9 +6,60 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              d:DesignHeight="450"
              d:DesignWidth="800"
-             Background="Red"
              mc:Ignorable="d">
-    <Grid>
-        <TextBlock Text="Loading...." />
+    <Grid Background="Black"
+          Opacity="0.6">
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition Height="80" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition Width="80" />
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+
+        <Canvas Grid.Row="1"
+                Grid.Column="1">
+            <Canvas.Triggers>
+                <EventTrigger RoutedEvent="Loaded">
+                    <BeginStoryboard>
+                        <BeginStoryboard.Storyboard>
+                            <Storyboard RepeatBehavior="Forever">
+                                <DoubleAnimationUsingKeyFrames Storyboard.TargetName="Ellipse1"
+                                                               Storyboard.TargetProperty="(UIElement.RenderTransform).(RotateTransform.Angle)">
+                                    <DiscreteDoubleKeyFrame KeyTime="0:0:0.1"
+                                                            Value="45" />
+                                    <DiscreteDoubleKeyFrame KeyTime="0:0:0.2"
+                                                            Value="90" />
+                                    <DiscreteDoubleKeyFrame KeyTime="0:0:0.3"
+                                                            Value="135" />
+                                    <DiscreteDoubleKeyFrame KeyTime="0:0:0.4"
+                                                            Value="180" />
+                                    <DiscreteDoubleKeyFrame KeyTime="0:0:0.5"
+                                                            Value="225" />
+                                    <DiscreteDoubleKeyFrame KeyTime="0:0:0.6"
+                                                            Value="270" />
+                                    <DiscreteDoubleKeyFrame KeyTime="0:0:0.7"
+                                                            Value="315" />
+                                </DoubleAnimationUsingKeyFrames>
+                            </Storyboard>
+                        </BeginStoryboard.Storyboard>
+                    </BeginStoryboard>
+                </EventTrigger>
+            </Canvas.Triggers>
+            <Ellipse Name="Ellipse1"
+                     Canvas.Left="30"
+                     Width="20"
+                     Height="20"
+                     Fill="LightGray"
+                     RenderTransformOrigin="0.5,2">
+                <Ellipse.RenderTransform>
+                    <RotateTransform />
+                </Ellipse.RenderTransform>
+            </Ellipse>
+        </Canvas>
     </Grid>
 </UserControl>

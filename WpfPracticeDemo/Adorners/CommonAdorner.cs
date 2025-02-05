@@ -4,17 +4,17 @@ using System.Windows.Media;
 
 namespace WpfPracticeDemo.Adorners
 {
-    internal class LoadingAdorner : Adorner
+    internal class CommonAdorner : Adorner
     {
         private UIElement _elementOnAdorner;
 
-        public LoadingAdorner(UIElement adornedElement,
-                              UIElement elementOnAdorner1)
+        public CommonAdorner(UIElement adornedElement,
+                              UIElement elementOnAdorner)
                        : base(adornedElement)
         {
-            _elementOnAdorner = elementOnAdorner1;
+            _elementOnAdorner = elementOnAdorner;
 
-            AddVisualChild(elementOnAdorner1);
+            AddVisualChild(elementOnAdorner);
         }
 
         protected override Visual GetVisualChild(int index)
@@ -41,6 +41,7 @@ namespace WpfPracticeDemo.Adorners
         }
         protected override Size ArrangeOverride(Size finalSize)
         {
+            _elementOnAdorner.Arrange(new Rect(finalSize));
             return base.ArrangeOverride(finalSize);
         }
 

@@ -12,6 +12,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using WpfPracticeDemo.Adorners;
 
 namespace WpfPracticeDemo.Views
 {
@@ -22,7 +23,14 @@ namespace WpfPracticeDemo.Views
     {
         public UcBootAdvancedActionView()
         {            
-            InitializeComponent();            
+            InitializeComponent();
+
+            this.Loaded += UcBootAdvancedActionView_Loaded;
+        }
+
+        private void UcBootAdvancedActionView_Loaded(object sender, RoutedEventArgs e)
+        {
+            AdornerLayer.GetAdornerLayer(this.MainContentContainer)?.Add(new CommonAdorner(this.MainContentContainer, new AdornerLoadingView()));
         }
     }
 }
