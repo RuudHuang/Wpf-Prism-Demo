@@ -16,23 +16,47 @@
         <models:DemoEventTrigger EventName="Loaded"
                                  TargetCommand="{Binding LoadedCommand}" />
     </helpers:EventToCommandHelpercs.EventTrigger>
-    <ListBox Name="ShapeMenus"
-             ItemsSource="{Binding ShapeMenus}">
-        <ListBox.ItemContainerStyle>
-            <Style TargetType="{x:Type ListBoxItem}">
-                <Setter Property="Template">
-                    <Setter.Value>
-                        <ControlTemplate TargetType="{x:Type ListBoxItem}">
-                            <Expander Header="{Binding ShapeMenuName}"
-                                      IsExpanded="{Binding IsExpanded}">
-                                <ListBox HorizontalContentAlignment="Center"
-                                         ItemsSource="{Binding ShapeTypes}"
-                                         SelectedItem="{Binding ElementName=ShapeMenus, Path=DataContext.SelectedShapeType}" />
-                            </Expander>
-                        </ControlTemplate>
-                    </Setter.Value>
-                </Setter>
-            </Style>
-        </ListBox.ItemContainerStyle>
-    </ListBox>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition Height="8" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="8" />
+            <ColumnDefinition />
+            <ColumnDefinition Width="8" />
+        </Grid.ColumnDefinitions>
+
+        <GroupBox Grid.Column="1"
+                  Header="Graphics" />
+
+        <GroupBox Grid.Row="2"
+                  Grid.Column="1"
+                  Header="Shapes">
+            <ListBox Name="ShapeMenus"
+                     BorderThickness="0"
+                     ItemsSource="{Binding ShapeMenus}">
+                <ListBox.ItemContainerStyle>
+                    <Style TargetType="{x:Type ListBoxItem}">
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="{x:Type ListBoxItem}">
+                                    <Expander Margin="0,0,0,10"
+                                              Header="{Binding ShapeMenuName}"
+                                              IsExpanded="{Binding IsExpanded}">
+                                        <ListBox HorizontalContentAlignment="Center"
+                                                 ItemsSource="{Binding ShapeTypes}"
+                                                 SelectedItem="{Binding ElementName=ShapeMenus, Path=DataContext.SelectedShapeType}" />
+                                    </Expander>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </ListBox.ItemContainerStyle>
+            </ListBox>
+        </GroupBox>
+
+    </Grid>
 </UserControl>
