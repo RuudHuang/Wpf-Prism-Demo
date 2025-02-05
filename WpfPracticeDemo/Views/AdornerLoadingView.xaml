@@ -15,6 +15,11 @@
             <Setter Property="Canvas.Left" Value="30" />
             <Setter Property="RenderTransformOrigin" Value="0.5,2" />
         </Style>
+
+        <PowerEase x:Key="EllipsePowerEase"
+                   EasingMode="EaseInOut"
+                   Power="3" />
+
     </UserControl.Resources>
 
     <Grid Background="Black"
@@ -41,34 +46,22 @@
                                         Storyboard.TargetProperty="(UIElement.RenderTransform).(RotateTransform.Angle)">
                                 <DoubleAnimation AccelerationRatio="0.1"
                                                  DecelerationRatio="0.9"
+                                                 EasingFunction="{StaticResource EllipsePowerEase}"
                                                  Storyboard.TargetName="Ellipse1"
                                                  To="360"
-                                                 Duration="0:0:2">
-                                    <DoubleAnimation.EasingFunction>
-                                        <PowerEase EasingMode="EaseInOut"
-                                                   Power="3" />
-                                    </DoubleAnimation.EasingFunction>
-                                </DoubleAnimation>
+                                                 Duration="0:0:2" />
                                 <DoubleAnimation AccelerationRatio="0.4"
                                                  DecelerationRatio="0.6"
+                                                 EasingFunction="{StaticResource EllipsePowerEase}"
                                                  Storyboard.TargetName="Ellipse2"
                                                  To="360"
-                                                 Duration="0:0:2">
-                                    <DoubleAnimation.EasingFunction>
-                                        <PowerEase EasingMode="EaseInOut"
-                                                   Power="3" />
-                                    </DoubleAnimation.EasingFunction>
-                                </DoubleAnimation>
+                                                 Duration="0:0:2" />
                                 <DoubleAnimation AccelerationRatio="0.7"
                                                  DecelerationRatio="0.3"
+                                                 EasingFunction="{StaticResource EllipsePowerEase}"
                                                  Storyboard.TargetName="Ellipse3"
                                                  To="360"
-                                                 Duration="0:0:2">
-                                    <DoubleAnimation.EasingFunction>
-                                        <PowerEase EasingMode="EaseInOut"
-                                                   Power="3" />
-                                    </DoubleAnimation.EasingFunction>
-                                </DoubleAnimation>
+                                                 Duration="0:0:2" />
                             </Storyboard>
                         </BeginStoryboard.Storyboard>
                     </BeginStoryboard>
