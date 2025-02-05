@@ -483,7 +483,7 @@ namespace WpfPracticeDemo.Views
 
             var shapeSelectedAdornerGeometry = GetGeometry(graphicInfo.Shape, _canvasLeftButtonUpPoint, GeometryType.Selected);
 
-            ShapeDrawingAdorner shapeSelectedAdorner = new ShapeDrawingAdorner(element, shapeSelectedAdornerGeometry, Colors.Red, DashStyles.Solid);
+            ShapeDrawingAdorner shapeSelectedAdorner = new ShapeDrawingAdorner(element, shapeSelectedAdornerGeometry, Colors.Red, DashStyles.Solid,5);
 
             AdornerLayer.GetAdornerLayer(element)?.Add(shapeSelectedAdorner);
 
@@ -562,7 +562,7 @@ namespace WpfPracticeDemo.Views
 
         private Adorner CreateAdorner(Geometry geometry, Color adornerColor, DashStyle dashStyle)
         {
-            ShapeDrawingAdorner shapeDrawingAdorner = new ShapeDrawingAdorner(this.Canvas, geometry, adornerColor, dashStyle);
+            ShapeDrawingAdorner shapeDrawingAdorner = new ShapeDrawingAdorner(this.Canvas, geometry, adornerColor, dashStyle, 5);
 
             return shapeDrawingAdorner;
         }
