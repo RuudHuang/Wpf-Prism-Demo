@@ -7,6 +7,16 @@
              d:DesignHeight="450"
              d:DesignWidth="800"
              mc:Ignorable="d">
+    <UserControl.Resources>
+        <Style TargetType="{x:Type Ellipse}">
+            <Setter Property="Width" Value="20" />
+            <Setter Property="Height" Value="20" />
+            <Setter Property="Fill" Value="LightGray" />
+            <Setter Property="Canvas.Left" Value="30" />
+            <Setter Property="RenderTransformOrigin" Value="0.5,2" />
+        </Style>
+    </UserControl.Resources>
+
     <Grid Background="Black"
           Opacity="0.6">
         <Grid.RowDefinitions>
@@ -27,35 +37,57 @@
                 <EventTrigger RoutedEvent="Loaded">
                     <BeginStoryboard>
                         <BeginStoryboard.Storyboard>
-                            <Storyboard RepeatBehavior="Forever">
-                                <DoubleAnimationUsingKeyFrames Storyboard.TargetName="Ellipse1"
-                                                               Storyboard.TargetProperty="(UIElement.RenderTransform).(RotateTransform.Angle)">
-                                    <DiscreteDoubleKeyFrame KeyTime="0:0:0.1"
-                                                            Value="45" />
-                                    <DiscreteDoubleKeyFrame KeyTime="0:0:0.2"
-                                                            Value="90" />
-                                    <DiscreteDoubleKeyFrame KeyTime="0:0:0.3"
-                                                            Value="135" />
-                                    <DiscreteDoubleKeyFrame KeyTime="0:0:0.4"
-                                                            Value="180" />
-                                    <DiscreteDoubleKeyFrame KeyTime="0:0:0.5"
-                                                            Value="225" />
-                                    <DiscreteDoubleKeyFrame KeyTime="0:0:0.6"
-                                                            Value="270" />
-                                    <DiscreteDoubleKeyFrame KeyTime="0:0:0.7"
-                                                            Value="315" />
-                                </DoubleAnimationUsingKeyFrames>
+                            <Storyboard RepeatBehavior="Forever"
+                                        Storyboard.TargetProperty="(UIElement.RenderTransform).(RotateTransform.Angle)">
+                                <DoubleAnimation AccelerationRatio="0.1"
+                                                 DecelerationRatio="0.9"
+                                                 Storyboard.TargetName="Ellipse1"
+                                                 To="360"
+                                                 Duration="0:0:2">
+                                    <DoubleAnimation.EasingFunction>
+                                        <PowerEase EasingMode="EaseInOut"
+                                                   Power="3" />
+                                    </DoubleAnimation.EasingFunction>
+                                </DoubleAnimation>
+                                <DoubleAnimation AccelerationRatio="0.4"
+                                                 DecelerationRatio="0.6"
+                                                 Storyboard.TargetName="Ellipse2"
+                                                 To="360"
+                                                 Duration="0:0:2">
+                                    <DoubleAnimation.EasingFunction>
+                                        <PowerEase EasingMode="EaseInOut"
+                                                   Power="3" />
+                                    </DoubleAnimation.EasingFunction>
+                                </DoubleAnimation>
+                                <DoubleAnimation AccelerationRatio="0.7"
+                                                 DecelerationRatio="0.3"
+                                                 Storyboard.TargetName="Ellipse3"
+                                                 To="360"
+                                                 Duration="0:0:2">
+                                    <DoubleAnimation.EasingFunction>
+                                        <PowerEase EasingMode="EaseInOut"
+                                                   Power="3" />
+                                    </DoubleAnimation.EasingFunction>
+                                </DoubleAnimation>
                             </Storyboard>
                         </BeginStoryboard.Storyboard>
                     </BeginStoryboard>
                 </EventTrigger>
             </Canvas.Triggers>
             <Ellipse Name="Ellipse1"
-                     Canvas.Left="30"
-                     Width="20"
-                     Height="20"
-                     Fill="LightGray"
-                     RenderTransformOrigin="0.5,2">
+                     Fill="Red">
+                <Ellipse.RenderTransform>
+                    <RotateTransform />
+                </Ellipse.RenderTransform>
+            </Ellipse>
+            <Ellipse Name="Ellipse2"
+                     Fill="Green">
+                <Ellipse.RenderTransform>
+                    <RotateTransform />
+                </Ellipse.RenderTransform>
+            </Ellipse>
+            <Ellipse Name="Ellipse3"
+                     Fill="Blue">
                 <Ellipse.RenderTransform>
                     <RotateTransform />
                 </Ellipse.RenderTransform>
