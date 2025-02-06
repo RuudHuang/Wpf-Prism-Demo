@@ -2,6 +2,7 @@
 using System.Collections.ObjectModel;
 using System.Linq;
 using WpfPracticeDemo.Enums;
+using WpfPracticeDemo.Helpers;
 using WpfPracticeDemo.Interfaces;
 using WpfPracticeDemo.Models;
 
@@ -33,7 +34,7 @@ namespace WpfPracticeDemo.ViewModels
             {
                 if (SetProperty(ref _selectedShapeType, value))
                 {
-                    var selectedDrawingShapeType = GetShapeType(value);
+                    var selectedDrawingShapeType = EnumHelper.GetEnum<ShapeType>(value);
                     _drawingShapeTypeService.SetSelectedShapeType(selectedDrawingShapeType);
                 }
             }
@@ -145,24 +146,9 @@ namespace WpfPracticeDemo.ViewModels
 
         private void OperationTypeChangedHandler(OperationType operationType)
         {
-            if (operationType.Equals(OperationType.Select))
+            if (operationType.Equals(OperationType.Move) || operationType.Equals(OperationType.Delete))
             {
                 SelectedShapeType = ShapeMenus.FirstOrDefault(x => x.ShapeMenuName.Equals(NormalShapeName)).ShapeTypes.FirstOrDefault(x => x.Equals(nameof(ShapeType.Rectangle)));
-            }
-        }
-
-        private ShapeType GetShapeType(string shapeTypeName)
-        {
-            switch (shapeTypeName)
-            {
-                case nameof(ShapeType.Line):
-                    return ShapeType.Line;
-                case nameof(ShapeType.Rectangle):
-                    return ShapeType.Rectangle;
-                case nameof(ShapeType.Circle):
-                    return ShapeType.Circle;
-                default:
-                    return ShapeType.Line;
             }
         }
     }

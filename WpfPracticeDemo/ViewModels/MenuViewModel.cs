@@ -1,6 +1,7 @@
 ﻿using Prism.Events;
 using System.Collections.ObjectModel;
 using WpfPracticeDemo.Enums;
+using WpfPracticeDemo.Helpers;
 using WpfPracticeDemo.Interfaces;
 
 namespace WpfPracticeDemo.ViewModels
@@ -20,7 +21,7 @@ namespace WpfPracticeDemo.ViewModels
             {
                 if (SetProperty(ref _selectedOperationType, value))
                 {
-                    var operationType = GetOperationType(value);
+                    var operationType = EnumHelper.GetEnum<OperationType>(value);
                     _operationTypeService.SetOperationType(operationType);
                 }
             }
@@ -32,29 +33,22 @@ namespace WpfPracticeDemo.ViewModels
         {
             _operationTypeService = operationTypeService;
 
-            OperationTypes = new ObservableCollection<string>()
-            {
-                nameof(OperationType.DrawGraphic),
-                nameof(OperationType.Select)
-            };
+            OperationTypes = new ObservableCollection<string>();
+
+        }
+
+        private void InitializeOperationType()
+        {
+            var operationTypes = EnumHelper.GetEnumDescriptions<OperationType>();
+
+            OperationTypes.AddRange(operationTypes);
         }
 
         protected override void OnLoaded(object parameter)
         {
-            SelectedOperationType = OperationTypes[0];
-        }
+            InitializeOperationType();
 
-        private OperationType GetOperationType(string operationTypeName)
-        {
-            switch (operationTypeName)
-            {
-                case nameof(OperationType.Select):
-                    return OperationType.Select;
-                case nameof(OperationType.DrawGraphic):
-                    return OperationType.DrawGraphic;
-                default:
-                    return OperationType.DrawGraphic;
-            }
-        }
+            SelectedOperationType = OperationTypes[0];
+        }        
     }
 }

@@ -139,6 +139,18 @@ namespace WpfPracticeDemo.Shapes
             else
             {
 
+                if (distanceToRectTopLeft > circleRadius
+                    && distanceToRectTopRight > circleRadius
+                    && distanceToRectBottomLeft > circleRadius
+                    && distanceToRectBottomRight > circleRadius
+                    && circleCenter.X > selectedRect.Location.X
+                    && circleCenter.X < selectedRect.Location.X + selectedRect.Width
+                    && circleCenter.Y > selectedRect.Location.Y
+                    && circleCenter.Y < selectedRect.Location.Y + selectedRect.Height)
+                {
+                    return true;
+                }
+
                 var centerPointInTopLine = new Point(selectedRect.Location.X + selectedRect.Width / 2, selectedRect.Location.Y);
                 var centerPointInLeftLine = new Point(selectedRect.Location.X, selectedRect.Location.Y + selectedRect.Height / 2);
                 var centerPointInRightLine = new Point(selectedRect.Location.X + selectedRect.Width, selectedRect.Location.Y + selectedRect.Height / 2);
