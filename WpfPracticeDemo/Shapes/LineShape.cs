@@ -8,7 +8,6 @@ namespace WpfPracticeDemo.Shapes
 {
     internal class LineShape : ShapeBase
     {
-
         public override string Name => "Line";
 
         public override ShapeType Type => ShapeType.Line;
