@@ -93,23 +93,46 @@ namespace WpfPracticeDemo.Shapes
 
         public override bool IsGeometryPointInSelectedRect(Geometry shapeGeometry, Rect selectedRect)
         {
-            var lineGeometry = _currentShapeGeometry as LineGeometry;
-
-            var lineStartPoint = lineGeometry.StartPoint;
-            var lineEndPoint = lineGeometry.EndPoint;
-
-            if ((lineStartPoint.X < selectedRect.Location.X && lineEndPoint.X < selectedRect.Location.X)
-                || (lineStartPoint.X > selectedRect.Location.X + selectedRect.Width && lineEndPoint.X > selectedRect.Location.X + selectedRect.Width)
-                || (lineStartPoint.Y < selectedRect.Location.Y && lineEndPoint.Y < selectedRect.Location.Y)
-                || (lineStartPoint.Y > selectedRect.Location.Y + selectedRect.Height && lineEndPoint.Y > selectedRect.Location.Y + selectedRect.Height))
+            if (!(_currentShapeGeometry is LineGeometry lineGeometry))
             {
                 return false;
             }
 
+            return IsLineIntersectRectangle(lineGeometry, selectedRect);
+        }
 
+        private static bool IsLineIntersectRectangle(LineGeometry line, Rect rectangle)
+        {
+            if (rectangle.Contains(line.StartPoint) || rectangle.Contains(line.EndPoint))
+            {
+                return true;
+            }
 
-            return true;
+            var ptStart = line.StartPoint;
+            var ptEnd = line.EndPoint;
 
+            var dx = ptEnd.X - ptStart.X;
+            var dy = ptEnd.Y - ptStart.Y;
+
+            var checkStep = 1.0f;
+            var distance = Math.Sqrt(dx * dx + dy * dy);
+
+            if (distance > 1)
+            {
+                checkStep = (float)(1 / distance);
+            }
+
+            for (float m = 0; m <= 1; m += checkStep)
+            {
+                var ptX = ptStart.X + m * dx;
+                var ptY = ptStart.Y + m * dy;
+                if (rectangle.Contains(new Point(ptX, ptY)))
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
     }
 }
