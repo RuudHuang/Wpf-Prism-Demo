@@ -7,7 +7,7 @@ namespace WpfPracticeDemo.Adorners
     internal class ShapeDrawingAdorner : Adorner
     {
 
-        private Geometry _shapeAdorner;
+        private Geometry _shapeAdornerGeometry;
 
         private Color _adornerColor;
 
@@ -15,18 +15,22 @@ namespace WpfPracticeDemo.Adorners
 
         private double _shapeThickness;
 
+        private bool _useHitPoint = false;
+
 
         public ShapeDrawingAdorner(UIElement adornedElement,
-                                   Geometry shapeAdorner,
+                                   Geometry shapeAdornerGeometry,
                                    Color adornerColor,
                                    DashStyle dashStyle,
-                                   double shapeThickness)
+                                   double shapeThickness,
+                                   bool useHitPoint)
             : base(adornedElement)
         {
-            _shapeAdorner = shapeAdorner;
+            _shapeAdornerGeometry = shapeAdornerGeometry;
             _adornerColor = adornerColor;
             _adornerDashStyle = dashStyle;
             _shapeThickness = shapeThickness;
+            _useHitPoint = useHitPoint;
         }
 
         protected override void OnRender(DrawingContext drawingContext)
@@ -35,13 +39,20 @@ namespace WpfPracticeDemo.Adorners
             var shapePen = new Pen(new SolidColorBrush(_adornerColor), _shapeThickness);
             shapePen.DashStyle = _adornerDashStyle;
 
-            drawingContext.DrawGeometry(shapeBrush, shapePen, _shapeAdorner);
+            drawingContext.DrawGeometry(shapeBrush, shapePen, _shapeAdornerGeometry);
 
             base.OnRender(drawingContext);
         }
 
         protected override HitTestResult HitTestCore(PointHitTestParameters hitTestParameters)
         {
+            if (_useHitPoint)
+            {
+                if (_shapeAdornerGeometry.FillContains(hitTestParameters.HitPoint))
+                {
+                    return new PointHitTestResult(this, hitTestParameters.HitPoint);
+                }
+            }
             return null;
         }
 

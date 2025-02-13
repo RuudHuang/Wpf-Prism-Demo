@@ -56,6 +56,7 @@ namespace WpfPracticeDemo.ViewModels
             {
                 ShapeMenuName = NormalShapeName,
                 IsExpanded = true,
+                IsEnable = true,
             };
 
             shapeMenu.ShapeTypes.Add(nameof(ShapeType.Line));
@@ -66,14 +67,17 @@ namespace WpfPracticeDemo.ViewModels
 
             OperationShapeMenu shapeMenu1 = new OperationShapeMenu()
             {
-                ShapeMenuName = "Shape1"
+                ShapeMenuName = "Shape1",
+                IsEnable=true
             };
 
             _shapeMenus.Add(shapeMenu1);
 
             OperationShapeMenu shapeMenu2 = new OperationShapeMenu()
             {
-                ShapeMenuName = "Shape2"
+                ShapeMenuName = "Shape2",
+                IsEnable=true
+
             };
 
             _shapeMenus.Add(shapeMenu2);
@@ -88,6 +92,7 @@ namespace WpfPracticeDemo.ViewModels
         {
             if (subscribe)
             {
+                _operationTypeService.OperationTypeChanged += OperationTypeService_OperationTypeChanged;
                 foreach (var item in ShapeMenus)
                 {
                     item.PropertyChanged += OperationShapeMenu_PropertyChanged;
@@ -95,10 +100,23 @@ namespace WpfPracticeDemo.ViewModels
             }
             else
             {
+                _operationTypeService.OperationTypeChanged -= OperationTypeService_OperationTypeChanged;
                 foreach (var item in ShapeMenus)
                 {
                     item.PropertyChanged -= OperationShapeMenu_PropertyChanged;
                 }
+            }
+        }
+
+        private void OperationTypeService_OperationTypeChanged(OperationType obj)
+        {
+            if (obj.Equals(OperationType.DrawGraphic))
+            {
+                ManageShapeMenuVisibility(true);
+            }
+            else
+            {
+                ManageShapeMenuVisibility(false);
             }
         }
 
@@ -149,6 +167,14 @@ namespace WpfPracticeDemo.ViewModels
             if (operationType.Equals(OperationType.Move) || operationType.Equals(OperationType.Delete))
             {
                 SelectedShapeType = ShapeMenus.FirstOrDefault(x => x.ShapeMenuName.Equals(NormalShapeName)).ShapeTypes.FirstOrDefault(x => x.Equals(nameof(ShapeType.Rectangle)));
+            }
+        }
+
+        private void ManageShapeMenuVisibility(bool visibility)
+        {
+            foreach (var item in ShapeMenus)
+            {
+                item.IsEnable = visibility;
             }
         }
     }

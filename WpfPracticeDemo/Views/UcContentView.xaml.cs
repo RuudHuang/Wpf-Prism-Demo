@@ -47,7 +47,9 @@ namespace WpfPracticeDemo.Views
 
         private Rect _canvasRect;
 
-        private AdornerLayer _canvasAdornerLayer;        
+        private AdornerLayer _canvasAdornerLayer;
+
+        private bool _useHitPoint = false;
 
         private readonly ObservableCollection<DemoGraphicInfomation> _selectedGraphics = new ObservableCollection<DemoGraphicInfomation>();
 
@@ -212,7 +214,7 @@ namespace WpfPracticeDemo.Views
         private void SelectShapesInSpecificSelectRectangle(Rect selectedRect)
         {
             foreach (var item in _graphics)
-            {
+            {                
                 var isGeometryPointInSelectedRect = _geometryService.IsGeometryPointInSelectedRect(item.Shape, item.GraphicPath.Data, selectedRect);
                 if (isGeometryPointInSelectedRect)
                 {
@@ -344,11 +346,11 @@ namespace WpfPracticeDemo.Views
 
                 var shapeSelectedAdornerGeometry = GetGeometry(graphicInfo.Shape, _canvasLeftButtonUpPoint, GeometryType.Selected);
 
-                ShapeDrawingAdorner shapeSelectedAdorner = new ShapeDrawingAdorner(element, shapeSelectedAdornerGeometry, Colors.Red, DashStyles.Solid, 5);
+                var adorner= CreateAdorner(shapeSelectedAdornerGeometry, _colorShapeSelected, DashStyles.Solid);
 
-                AdornerLayer.GetAdornerLayer(element)?.Add(shapeSelectedAdorner);
+                AddAdornerToAdornerLayer(adorner);
 
-                _shapeSelectedAdorners.Add(shapeSelectedAdorner);
+                _shapeSelectedAdorners.Add(adorner);
 
                 _selectedGraphics.Add(graphicInfo);
             }
@@ -363,15 +365,17 @@ namespace WpfPracticeDemo.Views
         }
 
         private void OperationTypeChangedHandler(OperationType operationType)
-        {
+        {            
+            ClearSelectedAdorners();
+            ClearSelectedGraphicCollection();
+
             if (CurrentOperationType.Equals(OperationType.DrawGraphic))
-            {
+            {                                
                 UpdatePathEventSubscribe(false);
-                ResetSelectedGraphicColor();
-                ClearSelectedGraphicCollection();
+                ResetSelectedGraphicColor();                
             }
             else
-            {
+            {                
                 UpdatePathEventSubscribe(true);
             }
         }
@@ -387,6 +391,11 @@ namespace WpfPracticeDemo.Views
         private void ClearSelectedGraphicCollection()
         {
             _selectedGraphics.Clear();
+        }
+
+        private void ClearTempSelectedGraphicCollection()
+        {
+            _tempSelectedGraphics.Clear();
         }
 
         private void UpdatePathEventSubscribe(bool subscribe)
@@ -431,9 +440,19 @@ namespace WpfPracticeDemo.Views
 
         private Adorner CreateAdorner(Geometry geometry, Color adornerColor, DashStyle dashStyle)
         {
-            ShapeDrawingAdorner shapeDrawingAdorner = new ShapeDrawingAdorner(this.Canvas, geometry, adornerColor, dashStyle, 5);
+            ShapeDrawingAdorner shapeDrawingAdorner = new ShapeDrawingAdorner(this.Canvas, geometry, adornerColor, dashStyle, 5, _useHitPoint);
+
+            if (_useHitPoint)
+            {
+                shapeDrawingAdorner.MouseEnter += ShapeDrawingAdorner_MouseEnter;
+            }
 
             return shapeDrawingAdorner;
+        }
+
+        private void ShapeDrawingAdorner_MouseEnter(object sender, MouseEventArgs e)
+        {
+            
         }
 
         private Adorner CreateShapeDrawingAdorner(Point endpoint, GeometryType geometryType, Color adornerDefaultColor, DashStyle dashStyle, bool isNeedValidateGeometry)
@@ -463,8 +482,27 @@ namespace WpfPracticeDemo.Views
                 case OperationType.Delete:
                     DeleteShapeCanvasMouseUp(mousePoint);
                     break;
+                case OperationType.AdjustSize:
+                    AdjustShapeCanvasMouseUp(mousePoint);
+                    break;
                 default: break;
             }            
+        }
+
+        private void AdjustShapeCanvasMouseUp(Point mousePoint)
+        {
+            if (!_selectedGraphics.Any())
+            {
+                _selectedGraphics.AddRange(_tempSelectedGraphics);
+                ClearTempSelectedGraphicCollection();
+            }
+            else
+            {
+                foreach (var item in _selectedGraphics)
+                {
+                    
+                }
+            }
         }
 
         private void DeleteShapeCanvasMouseUp(Point mousePoint)
@@ -476,7 +514,7 @@ namespace WpfPracticeDemo.Views
                 _graphics.Remove(item);
             }
 
-            _tempSelectedGraphics.Clear();
+            ClearTempSelectedGraphicCollection();
 
             ClearSelectedAdorners();
         }
@@ -485,7 +523,8 @@ namespace WpfPracticeDemo.Views
         {
             if (!_selectedGraphics.Any())
             {
-                    _selectedGraphics.AddRange(_tempSelectedGraphics);
+                _selectedGraphics.AddRange(_tempSelectedGraphics);
+                ClearTempSelectedGraphicCollection();
             }
             else
             {
@@ -516,8 +555,7 @@ namespace WpfPracticeDemo.Views
                     }
                 }
 
-                _selectedGraphics.Clear();
-                _tempSelectedGraphics.Clear();
+                ClearSelectedGraphicCollection();                
                 ClearSelectedAdorners();
             }
         }
@@ -535,6 +573,9 @@ namespace WpfPracticeDemo.Views
                     break;
                 case OperationType.Delete:
                     DeleteShape(mousePoint);
+                    break;
+                case OperationType.AdjustSize:
+                    AdjustShape(mousePoint);
                     break;
                 default:break;
             }
@@ -634,7 +675,19 @@ namespace WpfPracticeDemo.Views
             {
                 SelectShapes(mousePoint);
             }
-        }        
+        }
+
+        private void AdjustShape(Point mousePoint)
+        {
+            if (_selectedGraphics.Any())
+            {
+
+            }
+            else
+            {
+                SelectShapes(mousePoint);
+            }
+        }
 
     }
 }

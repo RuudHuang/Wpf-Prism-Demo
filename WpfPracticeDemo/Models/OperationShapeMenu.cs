@@ -5,6 +5,8 @@ namespace WpfPracticeDemo.Models
 {
     internal class OperationShapeMenu : BindableBase
     {
+        private bool _isEnable = false;
+
         private bool _isExpanded;
 
         public string ShapeMenuName { get; set; }
@@ -16,6 +18,16 @@ namespace WpfPracticeDemo.Models
             get { return _isExpanded; }
 
             set { SetProperty(ref _isExpanded, value); }
+        }
+
+        public bool IsEnable
+        { 
+          get => _isEnable;
+
+            set
+            { 
+              SetProperty(ref _isEnable, value);
+            }
         }
     }
 }

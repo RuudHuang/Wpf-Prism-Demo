@@ -13,9 +13,9 @@
              d:DesignWidth="800"
              mc:Ignorable="d">
     <helpers:EventToCommandHelpercs.EventTrigger>
-        <models:DemoEventTrigger EventName="Loaded"
-                                 TargetCommand="{Binding LoadedCommand}" />
+        <models:DemoEventTrigger EventName="Loaded" TargetCommand="{Binding LoadedCommand}" />
     </helpers:EventToCommandHelpercs.EventTrigger>
+
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition />
@@ -29,8 +29,7 @@
             <ColumnDefinition Width="8" />
         </Grid.ColumnDefinitions>
 
-        <GroupBox Grid.Column="1"
-                  Header="Graphics" />
+        <GroupBox Grid.Column="1" Header="Graphics" />
 
         <GroupBox Grid.Row="2"
                   Grid.Column="1"
@@ -47,6 +46,7 @@
                                               Header="{Binding ShapeMenuName}"
                                               IsExpanded="{Binding IsExpanded}">
                                         <ListBox HorizontalContentAlignment="Center"
+                                                 IsEnabled="{Binding IsEnable}"
                                                  ItemsSource="{Binding ShapeTypes}"
                                                  SelectedItem="{Binding ElementName=ShapeMenus, Path=DataContext.SelectedShapeType}" />
                                     </Expander>
