@@ -113,6 +113,7 @@
     <Compile Include="Models\OperationShapeMenu.cs" />
     <Compile Include="Models\SelectedShapeChangedEventArgs.cs" />
     <Compile Include="Models\ShapeBase.cs" />
+    <Compile Include="Models\ShapeTypeDisplayModel.cs" />
     <Compile Include="Models\StartActionProgressChangedEventArgs.cs" />
     <Compile Include="Services\DemoRegionNavigateService.cs" />
     <Compile Include="Services\GeometryService.cs" />

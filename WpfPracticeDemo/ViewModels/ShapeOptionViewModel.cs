@@ -1,6 +1,7 @@
 ﻿using Prism.Events;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Windows.Media;
 using WpfPracticeDemo.Enums;
 using WpfPracticeDemo.Helpers;
 using WpfPracticeDemo.Interfaces;
@@ -13,7 +14,7 @@ namespace WpfPracticeDemo.ViewModels
 
         private const string NormalShapeName = "NormalShape";
 
-        private string _selectedShapeType;
+        private ShapeTypeDisplayModel _selectedShapeType;
 
         private readonly IDrawingShapeTypeService _drawingShapeTypeService;
 
@@ -26,7 +27,7 @@ namespace WpfPracticeDemo.ViewModels
             get { return _shapeMenus; }
         }
 
-        public string SelectedShapeType
+        public ShapeTypeDisplayModel SelectedShapeType
         {
             get { return _selectedShapeType; }
 
@@ -34,7 +35,7 @@ namespace WpfPracticeDemo.ViewModels
             {
                 if (SetProperty(ref _selectedShapeType, value))
                 {
-                    var selectedDrawingShapeType = EnumHelper.GetEnum<ShapeType>(value);
+                    var selectedDrawingShapeType = EnumHelper.GetEnum<ShapeType>(value.ShapeTypeName);
                     _drawingShapeTypeService.SetSelectedShapeType(selectedDrawingShapeType);
                 }
             }
@@ -59,9 +60,44 @@ namespace WpfPracticeDemo.ViewModels
                 IsEnable = true,
             };
 
-            shapeMenu.ShapeTypes.Add(nameof(ShapeType.Line));
-            shapeMenu.ShapeTypes.Add(nameof(ShapeType.Rectangle));
-            shapeMenu.ShapeTypes.Add(nameof(ShapeType.Circle));
+            ShapeTypeDisplayModel line = new ShapeTypeDisplayModel()
+            {
+                GraphicGeometry = new LineGeometry()
+                {
+                    StartPoint = new System.Windows.Point(0, 0),
+                    EndPoint = new System.Windows.Point(10, 0)
+                },
+                ShapeTypeName = nameof(ShapeType.Line)
+            };
+
+            ShapeTypeDisplayModel rectangle = new ShapeTypeDisplayModel()
+            {
+                GraphicGeometry = new RectangleGeometry()
+                {
+                    Rect=new System.Windows.Rect()
+                    { 
+                     Location=new System.Windows.Point(0,0),
+                      Height=10,
+                       Width=10
+                    }
+                },
+                ShapeTypeName = nameof(ShapeType.Rectangle)
+            };
+
+            ShapeTypeDisplayModel circle = new ShapeTypeDisplayModel()
+            {
+                GraphicGeometry = new EllipseGeometry()
+                {
+                     Center=new System.Windows.Point(10,10),
+                      RadiusX=10,
+                      RadiusY=10,
+                },
+                ShapeTypeName = nameof(ShapeType.Circle)
+            };
+
+            shapeMenu.ShapeTypes.Add(line);
+            shapeMenu.ShapeTypes.Add(rectangle);
+            shapeMenu.ShapeTypes.Add(circle);
 
             _shapeMenus.Add(shapeMenu);
 

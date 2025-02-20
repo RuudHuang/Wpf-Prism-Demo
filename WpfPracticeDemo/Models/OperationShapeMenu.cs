@@ -11,7 +11,7 @@ namespace WpfPracticeDemo.Models
 
         public string ShapeMenuName { get; set; }
 
-        public ObservableCollection<string> ShapeTypes { get; } = new ObservableCollection<string>();
+        public ObservableCollection<ShapeTypeDisplayModel> ShapeTypes { get; } = new ObservableCollection<ShapeTypeDisplayModel>();
 
         public bool IsExpanded
         {
