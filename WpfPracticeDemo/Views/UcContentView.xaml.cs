@@ -45,7 +45,7 @@ namespace WpfPracticeDemo.Views
 
         private Point _canvasLeftButtonUpPoint;
 
-        private Rect _canvasRect;
+        private Geometry _canvasRect;
 
         private AdornerLayer _canvasAdornerLayer;
 
@@ -97,7 +97,11 @@ namespace WpfPracticeDemo.Views
 
         private void UcContentView_Loaded(object sender, RoutedEventArgs e)
         {
-            _canvasRect = new Rect() { Location = new Point(0, 0), Size = new Size(this.Canvas.ActualWidth, this.Canvas.ActualHeight) };
+            _canvasRect = new RectangleGeometry()
+            {
+                Rect = new Rect() { Location = new Point(0, 0), Size = new Size(this.Canvas.ActualWidth, this.Canvas.ActualHeight) }
+            };
+
             _canvasAdornerLayer = AdornerLayer.GetAdornerLayer(this.Canvas);
         }
 
@@ -213,9 +217,14 @@ namespace WpfPracticeDemo.Views
 
         private void SelectShapesInSpecificSelectRectangle(Rect selectedRect)
         {
+            RectangleGeometry rectangleGeometry = new RectangleGeometry()
+            {
+                Rect = selectedRect
+            };            
+
             foreach (var item in _graphics)
             {                
-                var isGeometryPointInSelectedRect = _geometryService.IsGeometryPointInSelectedRect(item.Shape, item.GraphicPath.Data, selectedRect);
+                var isGeometryPointInSelectedRect = _geometryService.IsGeometryPointInSelectedRect(item.Shape, item.GraphicPath.Data, rectangleGeometry);
                 if (isGeometryPointInSelectedRect)
                 {
                     if (_tempSelectedGraphics.Any(x => x.Equals(item)))

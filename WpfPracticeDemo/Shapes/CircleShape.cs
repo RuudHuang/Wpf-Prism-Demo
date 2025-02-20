@@ -29,27 +29,7 @@ namespace WpfPracticeDemo.Shapes
         private double GetRadius(Point leftButtonDownPoint, Point leftButtonUpPoint)
         {
             return Math.Sqrt(Math.Pow(leftButtonDownPoint.X - leftButtonUpPoint.X, 2) + Math.Pow(leftButtonDownPoint.Y - leftButtonUpPoint.Y, 2));
-        }
-
-        public override bool IsGeometryValidation(Geometry shapeGeometry, Rect canvasRect)
-        {
-            var circleShapeGeometry = shapeGeometry as EllipseGeometry;
-            var circleRadius = circleShapeGeometry.RadiusX;
-            var pointLeft = circleShapeGeometry.Center.X - circleRadius;
-            var pointTop = circleShapeGeometry.Center.Y - circleRadius;
-            var pointRight = circleShapeGeometry.Center.X + circleRadius;
-            var pointBottom = circleShapeGeometry.Center.Y + circleRadius;
-
-            if (pointLeft < canvasRect.X
-                || pointTop < canvasRect.Y
-                || pointRight > canvasRect.X + canvasRect.Width
-                || pointBottom > canvasRect.Y + canvasRect.Height)
-            {
-                return false;
-            }
-
-            return base.IsGeometryValidation(shapeGeometry, canvasRect);
-        }
+        }        
 
         protected override Geometry CreateMouseOverGeometry(Point leftButtonDownPoint, Point leftButtonUpPoint)
         {
@@ -113,70 +93,7 @@ namespace WpfPracticeDemo.Shapes
 
             return ellipseGeometry;
         }
-
-        public override bool IsGeometryPointInSelectedRect(Geometry shapeGeometry, Rect selectedRect)
-        {
-            var circleCenter = (_currentShapeGeometry as EllipseGeometry).Center;
-            var circleRadius = (_currentShapeGeometry as EllipseGeometry).RadiusX;
-
-            var selectRectPointLeftTop = selectedRect.Location;
-            var selectRectPointLeftBottom = new Point(selectedRect.Location.X, selectedRect.Location.Y + selectedRect.Height);
-            var selectRectPointRightTop = new Point(selectedRect.Location.X + selectedRect.Width, selectedRect.Location.Y);
-            var selectRectPointRightBottom = new Point(selectedRect.Location.X + selectedRect.Width, selectedRect.Location.Y + selectedRect.Height);
-
-            var distanceToRectTopLeft = CalculateDistanceBetweenTwoPoint(circleCenter, selectRectPointLeftTop);
-            var distanceToRectTopRight = CalculateDistanceBetweenTwoPoint(circleCenter, selectRectPointRightTop);
-            var distanceToRectBottomLeft = CalculateDistanceBetweenTwoPoint(circleCenter, selectRectPointLeftBottom);
-            var distanceToRectBottomRight = CalculateDistanceBetweenTwoPoint(circleCenter, selectRectPointRightBottom);
-
-            if (distanceToRectTopLeft < circleRadius
-                || distanceToRectTopRight < circleRadius
-                || distanceToRectBottomLeft < circleRadius
-                || distanceToRectBottomRight < circleRadius)
-            {
-                return true;
-            }
-            else
-            {
-
-                if (distanceToRectTopLeft > circleRadius
-                    && distanceToRectTopRight > circleRadius
-                    && distanceToRectBottomLeft > circleRadius
-                    && distanceToRectBottomRight > circleRadius
-                    && circleCenter.X > selectedRect.Location.X
-                    && circleCenter.X < selectedRect.Location.X + selectedRect.Width
-                    && circleCenter.Y > selectedRect.Location.Y
-                    && circleCenter.Y < selectedRect.Location.Y + selectedRect.Height)
-                {
-                    return true;
-                }
-
-                var centerPointInTopLine = new Point(selectedRect.Location.X + selectedRect.Width / 2, selectedRect.Location.Y);
-                var centerPointInLeftLine = new Point(selectedRect.Location.X, selectedRect.Location.Y + selectedRect.Height / 2);
-                var centerPointInRightLine = new Point(selectedRect.Location.X + selectedRect.Width, selectedRect.Location.Y + selectedRect.Height / 2);
-                var centerPointInBottomLine = new Point(selectedRect.Location.X + selectedRect.Width / 2, selectedRect.Location.Y + selectedRect.Height);
-
-                var distanToRectTopLine = CalculateDistanceBetweenTwoPoint(circleCenter, centerPointInTopLine);
-                var distanToRectLeftLine = CalculateDistanceBetweenTwoPoint(circleCenter, centerPointInLeftLine);
-                var distanToRectRightLine = CalculateDistanceBetweenTwoPoint(circleCenter, centerPointInRightLine);
-                var distanToRectBottomLine = CalculateDistanceBetweenTwoPoint(circleCenter, centerPointInBottomLine);
-
-                if (distanToRectTopLine < circleRadius
-                    || distanToRectLeftLine < circleRadius
-                    || distanToRectRightLine < circleRadius
-                    || distanToRectBottomLine < circleRadius)
-                {
-                    return true;
-                }
-
-                return false;
-            }
-        }
-
-        private static double CalculateDistanceBetweenTwoPoint(Point point1, Point point2)
-        {
-            return Math.Sqrt(Math.Pow(point1.X - point2.X, 2) + Math.Pow(point1.Y - point2.Y, 2));
-        }
+        
     }
 }
 

@@ -46,13 +46,13 @@ namespace WpfPracticeDemo.Adorners
 
         protected override HitTestResult HitTestCore(PointHitTestParameters hitTestParameters)
         {
-            if (_useHitPoint)
-            {
-                if (_shapeAdornerGeometry.FillContains(hitTestParameters.HitPoint))
-                {
-                    return new PointHitTestResult(this, hitTestParameters.HitPoint);
-                }
-            }
+            //if (_useHitPoint)
+            //{
+            //    if (_shapeAdornerGeometry.FillContains(hitTestParameters.HitPoint))
+            //    {
+            //        return new PointHitTestResult(this, hitTestParameters.HitPoint);
+            //    }
+            //}
             return null;
         }
 

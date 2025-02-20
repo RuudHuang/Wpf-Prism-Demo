@@ -128,36 +128,6 @@ namespace WpfPracticeDemo.Shapes
             };
 
             return rectangleSize;
-        }
-
-        public override bool IsGeometryValidation(Geometry shapeGeometry, Rect canvasRect)
-        {
-            var rectangleGeometryRect = (shapeGeometry as RectangleGeometry).Rect;
-
-            if (rectangleGeometryRect.Location.X < canvasRect.Location.X
-                || rectangleGeometryRect.Location.Y < canvasRect.Y
-                || rectangleGeometryRect.Location.X + rectangleGeometryRect.Width > canvasRect.Location.X + canvasRect.Width
-                || rectangleGeometryRect.Location.Y + rectangleGeometryRect.Height > canvasRect.Location.Y + canvasRect.Height)
-            {
-                return false;
-            }
-
-            return base.IsGeometryValidation(shapeGeometry, canvasRect);
-        }
-
-        public override bool IsGeometryPointInSelectedRect(Geometry shapeGeometry, Rect selectedRect)
-        {
-
-            var shapeRect = (_currentShapeGeometry as RectangleGeometry).Rect;
-
-            if (shapeRect.IntersectsWith(selectedRect))
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
+        }       
     }
 }

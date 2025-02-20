@@ -12,9 +12,9 @@ namespace WpfPracticeDemo.Interfaces
 
         Geometry GetRelativeGeometry(Geometry orignalGeometry, ShapeBase shape, GeometryType geometryType, Point leftButtonDownPoint, Point leftButtonUpPoint);
 
-        bool IsGeometryValidation(ShapeBase shape, Geometry shapeGeometry, Rect canvasRect);
+        bool IsGeometryValidation(ShapeBase shape, Geometry shapeGeometry, Geometry canvasRect);
 
-        bool IsGeometryPointInSelectedRect(ShapeBase shape, Geometry shapeGeometry, Rect selectedRect);
+        bool IsGeometryPointInSelectedRect(ShapeBase shape, Geometry shapeGeometry, Geometry selectedRect);
 
         void UpdateGeometry(ShapeBase shape, Geometry geometry);
     }

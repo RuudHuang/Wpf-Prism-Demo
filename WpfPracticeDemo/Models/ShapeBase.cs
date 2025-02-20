@@ -35,16 +35,36 @@ namespace WpfPracticeDemo.Models
 
         public abstract Geometry GetRelativeGeometry(Geometry orignalGeometry, ShapeBase shape, GeometryType geometryType, Point leftButtonDownPoint, Point leftButtonUpPoint);
 
-        public abstract bool IsGeometryPointInSelectedRect(Geometry shapeGeometry, Rect selectedRect);
+        public bool IsGeometryPointInSelectedRect(Geometry shapeGeometry, Geometry selectedRect)
+        {
+            if (shapeGeometry.FillContainsWithDetail(selectedRect).Equals(IntersectionDetail.Intersects))
+            {
+                return true;
+            }
+
+            else
+            {
+                return false;
+            }
+        }
 
         public void UpdateGeometry(Geometry geometry)
         {
             _currentShapeGeometry = geometry;
         }
 
-        public virtual bool IsGeometryValidation(Geometry shapeGeometry, Rect canvasRect)
+        public bool IsGeometryValidation(Geometry shapeGeometry, Geometry canvasRect)
         {
-            return true;
+            var intersectionDetail = canvasRect.FillContainsWithDetail(shapeGeometry);
+            if (intersectionDetail.Equals(IntersectionDetail.FullyContains))
+            {
+                return true;
+            }
+
+            else
+            {
+                return false;
+            }
         }
 
         protected Point GetDeltaPoint(Point leftButtonDownPoint, Point leftButtonUpPoint)
